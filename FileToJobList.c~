@@ -73,7 +73,7 @@ JobList* FileToJobList(FILE* file){
 
   free(line);
   //sort JobList on arrival time!
-  Sort(firstTempelement, jobCounter); // passing the list plus the number of jobs
+  sort(firstTempelement, jobCounter); // passing the list plus the number of jobs
  // sorts the jobList in terms of its arrival_time
   
   // need to figure out how to get to the first element

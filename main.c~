@@ -11,6 +11,6 @@ int main(int argc, char* argv[]) {
 	FILE* pFile;
 	pFile = fopen("Jobs.txt", "r");
 	JobList* FileToJobList(FILE* pFile);
-	//printf(" [%s] \n", FileToJobList);
+	printf(" [%s] \n", FileToJobList->jobname);
 	return 0;
 }

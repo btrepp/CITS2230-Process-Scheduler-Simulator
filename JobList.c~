@@ -1,6 +1,6 @@
 #include JobList.h
 
-typedef struct{
+struct{
   string jobname;
   int arrival_time;
   int length_time;
