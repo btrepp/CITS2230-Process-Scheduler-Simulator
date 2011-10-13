@@ -3,12 +3,12 @@
 
 
 PROJECT=CITS2230CpuSimulator
-SOURCES=main.c
+SOURCES=main.c FileToJobList.c 
 LIBRARY=
 INCPATHS=
 LIBPATHS=
 LDFLAGS=
-CFLAGS=-c -Wall
+CFLAGS=-c -Wall -std=c99
 CC=gcc
 
 # ------------ MAGIC BEGINS HERE -------------

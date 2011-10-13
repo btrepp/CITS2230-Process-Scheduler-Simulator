@@ -10,7 +10,15 @@
 int main(int argc, char* argv[]) {
 	FILE* pFile;
 	pFile = fopen("Jobs.txt", "r");
-	JobList* FileToJobList(FILE* pFile);
+	JobElement* list= FileToJobList(pFile);
+
+	while(list!=NULL){
+		printf("%s\n",list->jobname);
+		list=list->next;
+	}
+
 	//printf(" [%s] \n", FileToJobList);
 	return 0;
+
+
 }
