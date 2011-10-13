@@ -5,23 +5,24 @@
 #define TOKEN_BUFFER_SIZE 10
 #define _GNU_SOURCE
 
+#define DEBUG
+
+
 #include <stdlib.h>
 #include <string.h>
 #include <errno.h>
 #include <stdio.h>
 
 #include "JobList.h"
-#include "Sort.c"
+#include "sort.h"
+#include "debug.h"
+
 
 extern void Sort(JobElement* Job, int jobCounter);
 
 JobElement* FileToJobList(FILE* file){
   JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));
-  
-  //memset(firstelement,0,sizeof(JobElement));
-  
   JobElement* currentelement = firstelement;
-//  JobElement* firstTempelement = firstelement;
   
   // Job counter to count how many Jobs
   int jobCounter = 0;
@@ -34,10 +35,9 @@ JobElement* FileToJobList(FILE* file){
   if (file == NULL)
       exit(EXIT_FAILURE);
 
-  
   while ((read = getline(&line, &len, file)) != -1) {
-      printf("Retrieved line of length %zu :\n", read);
-      printf("Value of line :%s\n", line);
+      debug_print("Retrieved line of length %zu :\n", read);
+      debug_print("Value of line :%s\n", strtok(line, "\n"));
       
      //read space delimited values into array
       char* results[TOKEN_BUFFER_SIZE];
@@ -51,16 +51,14 @@ JobElement* FileToJobList(FILE* file){
       
       //if too many values
       if(i>3){
-	printf("Too many values for Job, please check data file!\n");
+	fprintf(stderr,"Too many values for Job, please check data file!\n");
 	for(int j=0;j<=i;j++)
-		printf("%d:%s\n",j,results[j]);
+		debug_print("%d:%s\n",j,results[j]);
 	exit(EXIT_FAILURE);
       }   
+      debug_print("Loading Job:%s into container...\n",results[0]);
      
- 
-      printf("Loading Job:%s into container...\n",results[0]);
-     
-	 //put into container
+      //put into container
       JobElement* thisOne = malloc(sizeof(JobElement));
       	
       memset(thisOne,0,sizeof(JobElement));
@@ -70,17 +68,16 @@ JobElement* FileToJobList(FILE* file){
       thisOne->jobname= jobname;
       thisOne->arrival_time= atoi(results[1]);
       thisOne->length_time= atoi(results[2]);
-      //if(firstelement!=NULL) printf("First element is not null! : %s\n",firstelement->jobname);
      
       //assign container
 	  if(jobCounter == 0){
 		firstelement= thisOne;
 		currentelement = thisOne;
-		printf("first element: %s \n current element: %s\n",firstelement->jobname, currentelement->jobname);
+		debug_print("F element: %s current element: %s\n",firstelement->jobname, currentelement->jobname);
 	  }else {
 		  currentelement->next=thisOne;
 		  currentelement=thisOne;
-		  printf("Current Element: %s\n JobCounter:%d\n",currentelement->jobname,jobCounter);
+		  debug_print("C Element: %s JC:%d\n",currentelement->jobname,jobCounter);
 	  }
       jobCounter++;
       
@@ -92,9 +89,11 @@ JobElement* FileToJobList(FILE* file){
 
  // free(&line);
   //sort JobElement on arrival time!
-  printf("going into sort\n");
-  Sort(firstelement, jobCounter); // passing the list plus the number of jobs
- 
+  debug_print_string("Going into sort\n");
+  firstelement = sort(firstelement, jobCounter); // passing the list plus the number of jobs
+  //why do we need the number of jobs? 
+
+
   // sorts the jobList in terms of its arrival_time
   
   // need to figure out how to get to the first element
