@@ -20,6 +20,6 @@ typedef struct JobSchedule{
 } JobSchedule;
 
 JobElement* FileToJobList(FILE* file);
-
+void Sort(JobElement* Job, int jobCounter);
 
 #endif

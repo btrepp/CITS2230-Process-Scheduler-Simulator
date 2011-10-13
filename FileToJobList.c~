@@ -93,6 +93,7 @@ JobElement* FileToJobList(FILE* file){
  // free(&line);
   //sort JobElement on arrival time!
   printf("going into sort\n");
+  jobCounter --; 
   Sort(firstelement, jobCounter); // passing the list plus the number of jobs
  
   // sorts the jobList in terms of its arrival_time
