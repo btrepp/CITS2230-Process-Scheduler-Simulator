@@ -3,7 +3,7 @@
 
 
 PROJECT=CITS2230CpuSimulator
-SOURCES=main.c FileToJobList.c sort.c 
+SOURCES=main.c fileToJobList.c sort.c 
 LIBRARY=
 INCPATHS=
 LIBPATHS=

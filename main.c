@@ -1,6 +1,6 @@
 #include <stdio.h>
 //#include "JobList.c"
-#include "JobList.h"
+#include "jobList.h"
 //#include "runschedules.c"
 //#include "Pscheduler.c"
 //#include "printResults.c"

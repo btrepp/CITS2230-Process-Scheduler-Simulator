@@ -1,9 +1,9 @@
-#include "JobList.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #define DEBUG
 #include "debug.h"
+#include "jobList.h"
 
 // Takes in the Joblist and sort its from its arrival time
 JobElement* sort(JobElement* Job, int jobCounter)
