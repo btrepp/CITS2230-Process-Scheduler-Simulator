@@ -16,6 +16,13 @@ JobElement* sort(JobElement* Job, int jobCounter)
 	debug_print("window = %s \n", window->jobname);
 	int i = 0;
 	int j;
+
+	/*consider using 
+ * 		currentjob->next!=NULL
+ * 		we shouldn't need to pass in how long the linked list is
+ * 		it's a linked list, that's unknown by definition :P
+ * 		*/
+
 	while( i < jobCounter)
 	{
 	  //debug_print("i = %d \n", i);
@@ -46,7 +53,10 @@ JobElement* sort(JobElement* Job, int jobCounter)
 		if(Job-> jobname == Job-> next->jobname) 
 		{
 		  debug_print("Jobname = %s \n Next Jobname = %s \n i = %d || j = %d \n", Job-> jobname, Job-> next->jobname, i , j);
-		  perror(NULL); exit(EXIT_FAILURE);
+		  // perror prints out the last error code from a syscall, it will be undefined here!
+		  //perror(NULL); 
+		  exit(EXIT_FAILURE);
+
 		}
 		i++;
 	}

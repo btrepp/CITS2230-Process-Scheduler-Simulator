@@ -16,6 +16,7 @@ int main(int argc, char* argv[]) {
 		printf("%s\n",list->jobname);
 		list=list->next;
 	}
+	printf("Complete!\n");
 
 	//printf(" [%s] \n", FileToJobList);
 	return 0;
