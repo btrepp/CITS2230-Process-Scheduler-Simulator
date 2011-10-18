@@ -17,13 +17,6 @@ JobElement* active_job=NULL;
 
 int active_job_scheduled_at;
 
-
-#define FCFS 1
-#define RR 2
-#define SPN 3
-#define SRT 4
-typedef int schedule_mode;
-
 schedule_mode mode=0;
 
 int k=0;
@@ -56,7 +49,7 @@ void sort_time_length(JobElement* joblist) {
 }
 
 int incrementClock(){
-  if(active_job_scheduled_at+active_job->length_time > current_clock){
+  if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time < current_clock)){
       active_job=NULL;
   //    free(active_job);
   }
@@ -88,6 +81,11 @@ bool no_more_jobs(){
   return false;
 }
 
+JobSchedule* getResults(){
+	return schedule_results_head;
+}
+
+
 void insertScheduleElement(JobSchedule* jobsch){
 	if(schedule_results_tail==NULL)
  	       schedule_results_head=jobsch;
@@ -103,7 +101,10 @@ void firstComeFirstServe(){
       return;
  
     //sort(unscheduled_jobs); // it should be sorted already due to FCFS!.
-      
+    
+    if(unscheduled_jobs_head==NULL)
+	return;  
+    
     active_job=unscheduled_jobs_head;
     unscheduled_jobs_head = unscheduled_jobs_head->next; 
     active_job_scheduled_at=current_clock;
@@ -114,7 +115,7 @@ void firstComeFirstServe(){
     scheduledjob->start_time = current_clock;
     scheduledjob->running_time = active_job->length_time; 
 
-
+    insertScheduleElement(scheduledjob);
 
 }
 

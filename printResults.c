@@ -1,15 +1,16 @@
-#include "jobList.h"
+#include "printResults.h"
+#include <stdio.h>
 
 void printResults(JobSchedule* start) {
- while(start != null ){
+ while(start != NULL ){
       printf(start->jobname);
       printf(" ");
     
-      for(int i=0;i<start->amount;i++){
-	  printf("(%d,%d) ",start->arrival_time[i],start->running_time[i]);
+      for(int i=0;i<1;i++){
+	  printf("(%d,%d) ",start->start_time,start->running_time);
       }
-      println();
-      start=start->next();
+      printf("\n");
+      start=start->next;
   }
       
 }
