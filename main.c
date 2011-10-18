@@ -13,7 +13,7 @@ int main(int argc, char* argv[]) {
 	JobElement* list= FileToJobList(pFile);
 
 	while(list!=NULL){
-		printf("%s\n",list->jobname);
+		printf("%s: %d\n",list->jobname,list->arrival_time);
 		list=list->next;
 	}
 	printf("Complete!\n");

@@ -1,13 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 #define DEBUG
 #include "debug.h"
 #include "jobList.h"
 
+void printOrder(JobElement* start);
+
 // Takes in the Joblist and sort its from its arrival time
-JobElement* sort(JobElement* Job, int jobCounter)
-{
+JobElement* altSort(JobElement* start){
+	JobElement* previous = NULL;
+	JobElement* head =start;
+	bool sorted=true;
+	
+	if(head->next==NULL){
+		if(head->next->arrival_time < head->arrival_time){
+			debug_print("swapping %s:%d with %s:%d\n",head->jobname,head->arrival_time,
+						head->next->jobname, head->next->arrival_time);
+			//swap head!
+			JobElement* curtemp=head->next;
+			head->next=curtemp->next;	
+			curtemp->next=head;
+			head=curtemp;
+			sorted=false;
+		}
+		previous=head;	
+	
+		JobElement* current= previous->next;
+		while(current!=NULL){
+			if(current->next->arrival_time < current->arrival_time){
+				debug_print("swapping %s:%d with %s:%d\n",current->jobname,current->arrival_time,
+						current->next->jobname, current->next->arrival_time);
+				//swap
+				JobElement* temp=current;
+				current->next = temp->next;
+				temp->next = current;
+				previous->next= current->next;
+				sorted=false;
+			}
+			previous=current;
+			current=current->next;		
+		}
+	}
+	if(sorted==false)
+		return altSort(head);
+	return head;
+}
+
+JobElement* sort(JobElement* Job, int jobCounter){
+	printOrder(Job);
+
 	JobElement* temp1; // temp container
 	JobElement* window; // a "window" iterator
 	window = Job;
@@ -23,7 +66,7 @@ JobElement* sort(JobElement* Job, int jobCounter)
  * 		it's a linked list, that's unknown by definition :P
  * 		*/
 
-	while( i < jobCounter)
+	while( window->next!=NULL)
 	{
 	  //debug_print("i = %d \n", i);
 		for(j = 0; j < jobCounter-1; j++)
@@ -55,6 +98,7 @@ JobElement* sort(JobElement* Job, int jobCounter)
 		  debug_print("Jobname = %s \n Next Jobname = %s \n i = %d || j = %d \n", Job-> jobname, Job-> next->jobname, i , j);
 		  // perror prints out the last error code from a syscall, it will be undefined here!
 		  //perror(NULL); 
+		  printOrder(Job);
 		  exit(EXIT_FAILURE);
 
 		}
@@ -63,3 +107,13 @@ JobElement* sort(JobElement* Job, int jobCounter)
 	debug_print_string("Finished sorting \n");
 	return Job;
 }
+
+void printOrder(JobElement* start){
+	JobElement* current =start;
+	while(current!=NULL){
+		debug_print("%s->",current->jobname);
+		current=current->next;
+	}
+}
+
+

@@ -18,7 +18,6 @@
 #include "debug.h"
 
 
-extern void Sort(JobElement* Job, int jobCounter);
 
 JobElement* FileToJobList(FILE* file){
   JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));
@@ -90,7 +89,7 @@ JobElement* FileToJobList(FILE* file){
  // free(&line);
   //sort JobElement on arrival time!
   debug_print_string("Going into sort\n");
-  firstelement = sort(firstelement, jobCounter); // passing the list plus the number of jobs
+  firstelement = altSort(firstelement); // passing the list plus the number of jobs
   //why do we need the number of jobs? 
 
 
