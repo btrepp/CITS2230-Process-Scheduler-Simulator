@@ -22,7 +22,7 @@
 JobElement* FileToJobList(FILE* file){
   JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));
   JobElement* currentelement = firstelement;
-  
+  JobElement* endelement = NULL;
   // Job counter to count how many Jobs
   int jobCounter = 0;
   
@@ -72,10 +72,13 @@ JobElement* FileToJobList(FILE* file){
 	  if(jobCounter == 0){
 		firstelement= thisOne;
 		currentelement = thisOne;
+		currentelement->next = endelement;// soo that the next element is null
 		debug_print("F element: %s current element: %s\n",firstelement->jobname, currentelement->jobname);
 	  }else {
-		  currentelement->next=thisOne;
-		  currentelement=thisOne;
+		  
+		  currentelement->next = thisOne; // adding new element to the list
+		  currentelement = currentelement->next; // move to the new element that was added
+		  currentelement->next= endelement; // next element would be null
 		  debug_print("C Element: %s JC:%d\n",currentelement->jobname,jobCounter);
 	  }
       jobCounter++;
@@ -89,7 +92,7 @@ JobElement* FileToJobList(FILE* file){
  // free(&line);
   //sort JobElement on arrival time!
   debug_print_string("Going into sort\n");
-  firstelement = altSort(firstelement); // passing the list plus the number of jobs
+  //firstelement = sort(firstelement,jobCounter); // passing the list plus the number of jobs
   //why do we need the number of jobs? 
 
 
