@@ -22,5 +22,5 @@ int incrementClock();
 void addJob(JobElement* job);
 bool no_more_jobs();
 JobSchedule* getResults();
-
+void setRoundRobinQuanta(int quanta);
 #endif

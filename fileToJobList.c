@@ -5,7 +5,7 @@
 #define TOKEN_BUFFER_SIZE 10
 #define _GNU_SOURCE
 
-#define DEBUG
+//#define DEBUG
 
 
 #include <stdlib.h>

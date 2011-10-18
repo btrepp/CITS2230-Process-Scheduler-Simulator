@@ -20,7 +20,8 @@ int main(int argc, char* argv[]) {
 	pFile = fopen("Jobs.txt", "r");
 	JobElement* list= FileToJobList(pFile);
 
-	setSchedulingMode(FCFS);
+	setSchedulingMode(RR);
+	setRoundRobinQuanta(2);
 	int clock=0;
 	while(list!=NULL){
 		

@@ -1,5 +1,9 @@
 #include "jobScheduler.h"
 #include "jobList.h"
+#include "sort.h"
+
+#include "debug.h"
+#define DEBUG
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,11 +34,18 @@ void setSchedulingMode(schedule_mode stuff){
   mode=stuff;
 }
 
+void setRoundRobinQuanta(int quanta){
+	debug_print("Quant set to:%d\n",quanta);
+	k=quanta;
+}
+
+
 void addJob(JobElement* job){
-  if(current_clock!=job->arrival_time){
+/*  if(current_clock!=job->arrival_time){
      fprintf(stderr,"Incorrect Arrival Time!");
       exit(EXIT_FAILURE);
   }
+*/
 
   if(unscheduled_jobs_tail==NULL)
 	unscheduled_jobs_head=job;
@@ -42,7 +53,10 @@ void addJob(JobElement* job){
 	unscheduled_jobs_tail->next=job;
   unscheduled_jobs_tail=job;
 
+  printOrder(unscheduled_jobs_head);
+  debug_print("Job:%s[%d,%d] @ %d\n",job->jobname,job->arrival_time,job->length_time,current_clock);
 }
+
 
 void sort_time_length(JobElement* joblist) {
 	//sort
@@ -50,7 +64,8 @@ void sort_time_length(JobElement* joblist) {
 
 int incrementClock(){
   if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time < current_clock)){
-      active_job=NULL;
+     	debug_print("Active Job completed @ %d\n",current_clock);
+	 active_job=NULL;
   //    free(active_job);
   }
   
@@ -71,7 +86,7 @@ int incrementClock(){
       shortremainingtime();
       break;
      } 
-  return current_clock++;
+   return current_clock++;
 }
 
 bool no_more_jobs(){
@@ -94,6 +109,14 @@ void insertScheduleElement(JobSchedule* jobsch){
 	 schedule_results_tail=jobsch;
 }
 
+JobElement* nextJobToSchedule(){
+	if(unscheduled_jobs_head==NULL)
+		return NULL;
+
+	JobElement* returnelem = unscheduled_jobs_head;
+	unscheduled_jobs_head = unscheduled_jobs_head->next;
+	return returnelem;
+}
 
 
 void firstComeFirstServe(){
@@ -102,12 +125,11 @@ void firstComeFirstServe(){
  
     //sort(unscheduled_jobs); // it should be sorted already due to FCFS!.
     
-    if(unscheduled_jobs_head==NULL)
-	return;  
-    
-    active_job=unscheduled_jobs_head;
-    unscheduled_jobs_head = unscheduled_jobs_head->next; 
+    active_job=nextJobToSchedule();
     active_job_scheduled_at=current_clock;
+
+    //if we have no jobs to schedule, idle
+    if(active_job==NULL) return;
 
     //create result
     JobSchedule* scheduledjob = malloc(sizeof(*scheduledjob));
@@ -120,7 +142,7 @@ void firstComeFirstServe(){
 }
 
 void roundrobin(){
-  /*  if(k<1){
+    if(k<1){
 	perror("Quanta can't be less than 1");
 	exit(EXIT_FAILURE);
     }
@@ -128,21 +150,32 @@ void roundrobin(){
     if(active_job!=NULL)
       return;
     
-    JobElement* temp==dequeue(unscheduled_jobs);
-    JobElement* remainingquantjob==NULL;
-    active_job==malloc(sizeof(JobListElement));
+    JobElement* temp=nextJobToSchedule();
+
+    if(temp==NULL) return;
+
+    JobElement* remainingquantjob=NULL;
+    active_job=malloc(sizeof(*active_job));
     
-    memcpy(temp,active_job,i cant remember args);
+    memcpy(active_job,temp,sizeof(*active_job));
     active_job->length_time=k;
     
     if(temp->length_time>k){
-      memcpy(temp,remainingquantjob,sizeof(JobListElement));
+      remainingquantjob = malloc(sizeof(*remainingquantjob));
+      memcpy(remainingquantjob,temp,sizeof(*remainingquantjob));
       remainingquantjob->length_time= temp->length_time-k;
-      unscheduled_jobs->add(remainingquantjob);
+
+      addJob(remainingquantjob); 
+     
     }
-      
-    schedule_results->next(active_job);
-    */
+
+    JobSchedule* jobsch = malloc(sizeof(*jobsch));
+    jobsch->jobname= temp->jobname;
+    jobsch->start_time = current_clock;
+    jobsch->running_time = k; 
+
+     
+    insertScheduleElement(jobsch);
 }
 
 void shortprocessnext(){
