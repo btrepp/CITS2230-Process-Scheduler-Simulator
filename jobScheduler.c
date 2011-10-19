@@ -73,7 +73,7 @@ int incrementClock(){
    else
         debug_print_string("System Idling\n");
 
-   if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time-1 < current_clock)){
+   if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time < current_clock)){
      	debug_print("Active Job completed @ %d\n",current_clock);
 	 active_job=NULL;
   //    free(active_job);
@@ -156,7 +156,10 @@ void firstComeFirstServe(){
 
 }
 
+JobElement* roundrobinqueue=NULL;
+
 void roundrobin(){
+
     if(k<1){
 	perror("Quanta can't be less than 1");
 	exit(EXIT_FAILURE);
@@ -164,6 +167,11 @@ void roundrobin(){
   
     if(active_job!=NULL)
       return;
+    
+    if(roundrobinqueue!=NULL){
+	addJob(roundrobinqueue);
+	roundrobinqueue=NULL;
+    }
     
     JobElement* temp=nextJobToSchedule();
 
@@ -174,20 +182,22 @@ void roundrobin(){
     active_job_scheduled_at=current_clock;
     
     memcpy(active_job,temp,sizeof(*active_job));
-    active_job->length_time=k;
+    //active_job->length_time=k;
     
     if(temp->length_time>k){
       remainingquantjob = malloc(sizeof(*remainingquantjob));
       memcpy(remainingquantjob,temp,sizeof(*remainingquantjob));
       remainingquantjob->length_time= temp->length_time-k;
-
-      addJob(remainingquantjob); 
+      active_job->length_time=k;
+      roundrobinqueue=remainingquantjob;
+      //addJob(remainingquantjob); 
     }
+
 
     JobSchedule* jobsch = malloc(sizeof(*jobsch));
     jobsch->jobname= temp->jobname;
     jobsch->start_time = current_clock;
-    jobsch->running_time = k; 
+    jobsch->running_time = active_job->length_time; 
 
      
     insertScheduleElement(jobsch);

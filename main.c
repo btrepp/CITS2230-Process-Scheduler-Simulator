@@ -4,7 +4,7 @@
 #include "jobList.h"
 #include "jobScheduler.h"
 #include "printResults.h"
-
+#include "setup.h"
 
 
 #define DEBUG
@@ -16,12 +16,10 @@
 //#include "FileToJobList.c"
 
 int main(int argc, char* argv[]) {
-	FILE* pFile;
-	pFile = fopen("Jobs.txt", "r");
-	JobElement* list= FileToJobList(pFile);
 
-	setSchedulingMode(RR);
-	setRoundRobinQuanta(2);
+	FILE* pFile = setup(argc,argv);
+	JobElement* list= FileToJobList(pFile);
+	
 	int clock=0;
 	while(list!=NULL){
 		while(list!=NULL && clock+1==list->arrival_time){
@@ -42,6 +40,4 @@ int main(int argc, char* argv[]) {
 
 	//printf(" [%s] \n", FileToJobList);
 	return 0;
-
-
 }
