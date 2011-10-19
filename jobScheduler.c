@@ -2,8 +2,8 @@
 #include "jobList.h"
 #include "sort.h"
 
-#include "debug.h"
 #define DEBUG
+#include "debug.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -47,14 +47,18 @@ void addJob(JobElement* job){
   }
 */
 
-  if(unscheduled_jobs_tail==NULL)
-	unscheduled_jobs_head=job;
-  else
-	unscheduled_jobs_tail->next=job;
-  unscheduled_jobs_tail=job;
+  JobElement* copy = malloc(sizeof(*copy));
+  memcpy(copy,job,sizeof(*copy));
+  copy->next=NULL;
 
+  if(unscheduled_jobs_tail==NULL)
+	unscheduled_jobs_head=copy;
+  else
+	unscheduled_jobs_tail->next=copy;
+  unscheduled_jobs_tail=copy;
+
+  debug_print("Added Job:%s[%d,%d]\n",copy->jobname,copy->arrival_time,copy->length_time);
   printOrder(unscheduled_jobs_head);
-  debug_print("Job:%s[%d,%d] @ %d\n",job->jobname,job->arrival_time,job->length_time,current_clock);
 }
 
 
@@ -63,7 +67,13 @@ void sort_time_length(JobElement* joblist) {
 }
 
 int incrementClock(){
-  if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time < current_clock)){
+   debug_print("Clock at :%d \n",current_clock);
+   if(active_job!=NULL)
+        debug_print("Job Finishes at: %d\n",active_job_scheduled_at+active_job->length_time);
+   else
+        debug_print_string("System Idling\n");
+
+   if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time-1 < current_clock)){
      	debug_print("Active Job completed @ %d\n",current_clock);
 	 active_job=NULL;
   //    free(active_job);
@@ -110,11 +120,16 @@ void insertScheduleElement(JobSchedule* jobsch){
 }
 
 JobElement* nextJobToSchedule(){
+	printOrder(unscheduled_jobs_head);
 	if(unscheduled_jobs_head==NULL)
 		return NULL;
 
 	JobElement* returnelem = unscheduled_jobs_head;
 	unscheduled_jobs_head = unscheduled_jobs_head->next;
+
+	if(unscheduled_jobs_head==NULL)
+		unscheduled_jobs_tail=NULL;
+
 	return returnelem;
 }
 
@@ -156,6 +171,7 @@ void roundrobin(){
 
     JobElement* remainingquantjob=NULL;
     active_job=malloc(sizeof(*active_job));
+    active_job_scheduled_at=current_clock;
     
     memcpy(active_job,temp,sizeof(*active_job));
     active_job->length_time=k;
@@ -166,7 +182,6 @@ void roundrobin(){
       remainingquantjob->length_time= temp->length_time-k;
 
       addJob(remainingquantjob); 
-     
     }
 
     JobSchedule* jobsch = malloc(sizeof(*jobsch));

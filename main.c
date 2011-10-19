@@ -24,7 +24,6 @@ int main(int argc, char* argv[]) {
 	setRoundRobinQuanta(2);
 	int clock=0;
 	while(list!=NULL){
-		
 		while(list!=NULL && clock+1==list->arrival_time){
 			debug_print("%s: %d @ %d \n",list->jobname,list->arrival_time,clock);
 			addJob(list);		
@@ -34,12 +33,12 @@ int main(int argc, char* argv[]) {
 		
 	}
 
-	while(no_more_jobs()==false)
-		incrementClock();
+	while(no_more_jobs()==false /*&& clock<20*/)
+		clock=incrementClock();
 	printf("Complete!\n");
 
 	JobSchedule* results = getResults();
-	printResults(results);
+	printResultsCompressed(results);
 
 	//printf(" [%s] \n", FileToJobList);
 	return 0;
