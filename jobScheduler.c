@@ -207,12 +207,7 @@ void roundrobin(){
     insertScheduleElement(jobsch);
 }
 
-void sortCPUList(){}
-
-
-void shortprocessnext(){
- 
-
+void sortCPUListRemainingTime(){
    if(unscheduled_jobs_head!=NULL){
 	//sort on shortest remaining time
 
@@ -224,19 +219,30 @@ void shortprocessnext(){
 	 }
    	 unscheduled_jobs_tail=temp;
    }
+}
 
+
+void shortprocessnext(){
    firstComeFirstServe();
 }
 
 void shortremainingtime(){
-/*   if(active_job!=NULL){
+/*  if(active_job!=NULL){
       perror("Active Job should always be NULL in SRT!");
       exit(EXIT_FAILURE);
    }
-   
-   sort_time_length(JobList);
-   
-    Job* temp==dequeue(unscheduled_jobs);
+  */ 
+
+    sortCPUListRemainingTime(); 
+    k=1;
+    roundrobin();  
+    if(roundrobinqueue!=NULL){
+        addJob(roundrobinqueue);
+        roundrobinqueue=NULL;
+    }
+ 
+/*    Job* temp=nextJobToSchedule();
+
     Job* remainingquantjob==NULL;
     active_job==malloc(sizeof(JobListElement));
     memcpy(temp,active_job,sizeof(JobListElement));
