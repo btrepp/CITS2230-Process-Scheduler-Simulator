@@ -73,11 +73,15 @@ int incrementClock(){
    else
         debug_print_string("System Idling\n");
 
-   if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time < current_clock)){
+
+   //check if active job should still be running
+   if(active_job!=NULL && (active_job_scheduled_at+active_job->length_time-1 < current_clock)){
      	debug_print("Active Job completed @ %d\n",current_clock);
 	 active_job=NULL;
   //    free(active_job);
   }
+
+  if(active_job!=NULL) return current_clock++;
   
   switch(mode){
     case FCFS:
@@ -204,13 +208,19 @@ void roundrobin(){
 }
 
 void shortprocessnext(){
-   
+ 
    //unscheduled_jobs_head = sortremainingtime(unscheduled_jobs_head);
 
-   //set last correctly
-   JobElement* temp=unscheduled_jobs_head;
-   while(temp->next!=NULL);
-   unscheduled_jobs_tail=temp;
+   if(unscheduled_jobs_head!=NULL){
+	//sort on shortest remaining time
+
+	   //set last correctly
+  	 JobElement* temp=unscheduled_jobs_head;
+  	 while(temp->next!=NULL){
+		temp=temp->next;
+	 }
+   	 unscheduled_jobs_tail=temp;
+   }
 
    firstComeFirstServe();
 }
