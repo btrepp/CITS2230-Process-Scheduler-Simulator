@@ -18,7 +18,7 @@
 int main(int argc, char* argv[]) {
 
 	FILE* pFile = setup(argc,argv);
-	JobElement* list= FileToJobList(pFile);
+	JobElement* list= FileToJobList(pFile); // list would be sorted on arrival time
 	
 	int clock=0;
 	while(list!=NULL){
