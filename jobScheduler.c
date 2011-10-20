@@ -212,11 +212,11 @@ void sortCPUList(){}
 
 void shortprocessnext(){
  
-   //unscheduled_jobs_head = sortremainingtime(unscheduled_jobs_head);
 
    if(unscheduled_jobs_head!=NULL){
 	//sort on shortest remaining time
 
+   	unscheduled_jobs_head = sortshortest(unscheduled_jobs_head);
 	   //set last correctly
   	 JobElement* temp=unscheduled_jobs_head;
   	 while(temp->next!=NULL){

@@ -134,7 +134,7 @@ JobElement* sortshortest(JobElement* Job)
 	//window = Job;
 	JobElement* startList; // marker to mark the start of the list, note should always be in at the start of the list!
 			      // So that we can return to the list and sort it from the start again
-	if( Job->next->next->next->next ==  NULL) debug_print_string("Job5 is null\n");
+	//if( Job->next->next->next->next ==  NULL) debug_print_string("Job5 is null\n");
 	firstJob = Job;
 	previous = Job;
 	startList = Job;
