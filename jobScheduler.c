@@ -216,7 +216,9 @@ void shortprocessnext(){
 
 	   //set last correctly
   	 JobElement* temp=unscheduled_jobs_head;
-  	 while(temp->next!=NULL);
+  	 while(temp->next!=NULL){
+		temp=temp->next;
+	 }
    	 unscheduled_jobs_tail=temp;
    }
 
