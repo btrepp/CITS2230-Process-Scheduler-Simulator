@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <string.h>
+
 
 #define DEBUG
 #include "debug.h"
@@ -121,10 +123,15 @@ JobElement* sort(JobElement* Job)
 
 void printOrder(JobElement* start){
 	JobElement* current =start;
+	char string[200];
+	memset(string,0,200);
 	while(current!=NULL){
-		debug_print("%s \n",current->jobname);
+		strcat(string,current->jobname);
+		strcat(string,"->");
+		//debug_print("%s->",current->jobname);
 		current=current->next;
 	}
+	debug_print("%s\n",string);
 }
 
 
