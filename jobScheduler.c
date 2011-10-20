@@ -204,12 +204,16 @@ void roundrobin(){
 }
 
 void shortprocessnext(){
-  /* if(active_job!=NULL)
-      return;
    
-   sort_time_length(JobList);
+   //unscheduled_jobs_head = sortremainingtime(unscheduled_jobs_head);
+
+   //set last correctly
+   JobElement* temp=unscheduled_jobs_head;
+   while(temp->next!=NULL);
+   unscheduled_jobs_tail=temp;
+
    firstComeFirstServe();
-*/}
+}
 
 void shortremainingtime(){
   /* if(active_job!=NULL){

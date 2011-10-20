@@ -8,9 +8,22 @@
 
 void printOrder(JobElement* start);
 
+int listLength(JobElement* Job){
+	int count=0;
+	while(Job!=NULL){
+		Job=Job->next;
+		count++;
+	}
+	return count;
+}
+
+
+
 // Takes in the Joblist and sort its from its arrival time
-JobElement* sort(JobElement* Job, int jobCounter)
+JobElement* sort(JobElement* Job)
 {
+	int jobCounter=listLength(Job);
+
 	JobElement* firstJob; // container for the first job in the linked list
 	printOrder(Job);
 	JobElement* temp1; // temp container
