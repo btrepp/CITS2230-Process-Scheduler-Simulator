@@ -1,2 +1,2 @@
 void printOrder(JobElement* start);
-JobElement* sort(JobElement* Job, int jobCounter);
+JobElement* sort(JobElement* Job);
