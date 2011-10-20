@@ -20,3 +20,12 @@ void addJobToCPU(VirtualCPU* cpu, JobElement* job);
 int incrementClock(VirtualCPU* cpu);
 void setRoundRobinCPUQuanta(VirtualCPU* cpu, int quanta);
 bool isCPUIdle(VirtualCPU* cpu);
+void initCPU(VirtualCPU* cpu);
+
+
+typedef int schedule_mode;
+#define FCFS 1
+#define RR 2
+#define SPN 3
+#define SRT 4
+

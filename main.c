@@ -21,7 +21,7 @@ int main(int argc, char* argv[]) {
 	JobElement* list=FileToJobList(pFile); // list would be sorted on arrival time
 
 	VirtualCPU cpu0;
-	memset(&cpu0,0,sizeof(cpu0));
+	initCPU(&cpu0);
 
 	int clock=0;
 	while(list!=NULL){
@@ -36,7 +36,7 @@ int main(int argc, char* argv[]) {
 		
 	}
 
-	while(isCPUIdle(&cpu0)==false /*&& clock<20*/)
+	while(isCPUIdle(&cpu0)==false && clock<20)
 		clock=incrementClock(&cpu0);
 	printf("Complete!\n");
 

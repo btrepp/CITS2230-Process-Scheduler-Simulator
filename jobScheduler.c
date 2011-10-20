@@ -10,38 +10,16 @@
 #include <string.h>
 #include <stdbool.h>
 
-int current_clock=0;
+//int current_clock=0;
 
 //JobElement* unscheduled_jobs_head=NULL;
 //JobElement* unscheduled_jobs_tail=NULL;
-JobSchedule* schedule_results_head=NULL;
-JobSchedule* schedule_results_tail=NULL;
+//JobSchedule* schedule_results_head=NULL;
+//JobSchedule* schedule_results_tail=NULL;
 
-JobElement* active_job=NULL;
+//JobElement* active_job=NULL;
 
-int active_job_scheduled_at;
 
-schedule_mode mode=0;
-
-int k=0;
-
-void firstComeFirstServe();
-void roundrobin();
-void shortprocessnext();
-void shortremainingtime();
-
-void setSchedulingMode(schedule_mode stuff){
-  mode=stuff;
-}
-
-void setRoundRobinQuanta(int quanta){
-	debug_print("Quant set to:%d\n",quanta);
-	k=quanta;
-}
-
-void sort_time_length(JobElement* joblist) {
-	//sort
-}
 
 /*int incrementClock(C){
    if(active_job!=NULL)
@@ -81,8 +59,8 @@ void sort_time_length(JobElement* joblist) {
 }
 */
 
-JobSchedule* getResults(){
-	return schedule_results_head;
+JobSchedule* getResults(JobScheduleContainer* list){
+	return list->head;
 }
 
 

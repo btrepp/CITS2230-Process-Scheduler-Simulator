@@ -19,13 +19,13 @@ typedef struct JobScheduleContainer{
 
 
 
-typedef int schedule_mode;
+/*typedef int schedule_mode;
 #define FCFS 1
 #define RR 2
 #define SPN 3
 #define SRT 4
-void setSchedulingMode(schedule_mode mode);
-bool no_more_jobs();
+*/
+//void setSchedulingMode(schedule_mode mode);
 JobSchedule* getResults();
 
 void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch);

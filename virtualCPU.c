@@ -13,6 +13,15 @@ void roundrobin(VirtualCPU* cpu);
 void shortprocessnext(VirtualCPU* cpu);
 void shortremainingtime(VirtualCPU* cpu);
 
+void initCPU(VirtualCPU* cpu){
+	memset(cpu,0,sizeof(*cpu));
+	cpu->unscheduled_jobs = malloc(sizeof(*(cpu->unscheduled_jobs)));
+	cpu->scheduled = malloc(sizeof(*(cpu->scheduled)));
+
+}
+
+
+
 
 int incrementClock(VirtualCPU* cpu){
    if(cpu->active_job!=NULL)
@@ -138,5 +147,9 @@ bool isCPUIdle(VirtualCPU* cpu){
 
 void setRoundRobinCPUQuanta(VirtualCPU* cpu, int quanta){
 	cpu->roundRobinQuanta=quanta;
+}
+
+void setSchedulingMode(VirtualCPU* cpu,schedule_mode stuff){
+  cpu->mode=stuff;
 }
 
