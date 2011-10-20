@@ -12,8 +12,8 @@
 
 int current_clock=0;
 
-JobElement* unscheduled_jobs_head=NULL;
-JobElement* unscheduled_jobs_tail=NULL;
+//JobElement* unscheduled_jobs_head=NULL;
+//JobElement* unscheduled_jobs_tail=NULL;
 JobSchedule* schedule_results_head=NULL;
 JobSchedule* schedule_results_tail=NULL;
 
@@ -39,34 +39,11 @@ void setRoundRobinQuanta(int quanta){
 	k=quanta;
 }
 
-
-void addJob(JobElement* job){
-/*  if(current_clock!=job->arrival_time){
-     fprintf(stderr,"Incorrect Arrival Time!");
-      exit(EXIT_FAILURE);
-  }
-*/
-
-  JobElement* copy = malloc(sizeof(*copy));
-  memcpy(copy,job,sizeof(*copy));
-  copy->next=NULL;
-
-  if(unscheduled_jobs_tail==NULL)
-	unscheduled_jobs_head=copy;
-  else
-	unscheduled_jobs_tail->next=copy;
-  unscheduled_jobs_tail=copy;
-
-  debug_print("Added Job:%s[%d,%d]\n",copy->jobname,copy->arrival_time,copy->length_time);
-  printOrder(unscheduled_jobs_head);
-}
-
-
 void sort_time_length(JobElement* joblist) {
 	//sort
 }
 
-int incrementClock(){
+/*int incrementClock(C){
    if(active_job!=NULL)
         debug_print("Clock at:%d, Job Finishes at: %d\n",
 		current_clock,active_job_scheduled_at+active_job->length_time);
@@ -102,27 +79,29 @@ int incrementClock(){
      } 
    return current_clock++;
 }
-
-bool no_more_jobs(){
-  if(unscheduled_jobs_head==NULL && active_job!=NULL){
-    return true;
-  }
-  return false;
-}
+*/
 
 JobSchedule* getResults(){
 	return schedule_results_head;
 }
 
 
-void insertScheduleElement(JobSchedule* jobsch){
-	if(schedule_results_tail==NULL)
- 	       schedule_results_head=jobsch;
+void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){
+	if(list->tail==NULL)
+ 	       list->head=jobsch;
  	 else
-        	schedule_results_tail->next=jobsch;
-	 schedule_results_tail=jobsch;
+        	list->tail->next=jobsch;
+	 list->tail=jobsch;
 }
-
+/*
+bool no_more_jobs(virtualcpu* cpu){
+  if(cpu-> && active_job!=NULL){
+    return true;
+  }
+  return false;
+}
+*/
+/*
 JobElement* nextJobToSchedule(){
 	printOrder(unscheduled_jobs_head);
 	if(unscheduled_jobs_head==NULL)
@@ -136,8 +115,8 @@ JobElement* nextJobToSchedule(){
 
 	return returnelem;
 }
-
-
+*/
+/*
 void firstComeFirstServe(){
     if(active_job!=NULL)
       return;
@@ -159,8 +138,8 @@ void firstComeFirstServe(){
     insertScheduleElement(scheduledjob);
 
 }
-
-JobElement* roundrobinqueue=NULL;
+*/
+/*JobElement* roundrobinqueue=NULL;
 
 void roundrobin(){
 
@@ -206,32 +185,27 @@ void roundrobin(){
      
     insertScheduleElement(jobsch);
 }
-
-void sortCPUListRemainingTime(){
-   if(unscheduled_jobs_head!=NULL){
+*/
+void sortCPUListRemainingTime(JobListContainer* list){
+   if(list->head!=NULL){
 	//sort on shortest remaining time
 
-   	unscheduled_jobs_head = sortshortest(unscheduled_jobs_head);
+   	list->head = sortshortest(list->head);
 	   //set last correctly
-  	 JobElement* temp=unscheduled_jobs_head;
+  	 JobElement* temp=list->head;
   	 while(temp->next!=NULL){
 		temp=temp->next;
 	 }
-   	 unscheduled_jobs_tail=temp;
+   	 list->tail=temp;
    }
 }
 
-
+/*
 void shortprocessnext(){
    firstComeFirstServe();
 }
 
 void shortremainingtime(){
-/*  if(active_job!=NULL){
-      perror("Active Job should always be NULL in SRT!");
-      exit(EXIT_FAILURE);
-   }
-  */ 
 
     sortCPUListRemainingTime(); 
     k=1;
@@ -241,22 +215,6 @@ void shortremainingtime(){
         roundrobinqueue=NULL;
     }
  
-/*    Job* temp=nextJobToSchedule();
-
-    Job* remainingquantjob==NULL;
-    active_job==malloc(sizeof(JobListElement));
-    memcpy(temp,active_job,sizeof(JobListElement));
-    active_job->length_time=1;
-    
-    
-    if(temp->length_time>1){
-      memcpy(temp,remainingquantjob,sizeof(JobListElement));
-      remainingquantjob->length_time= temp->length_time-1;
-      unscheduled_jobs->add(remainingquantjob);
-    }
-   
-   schedule_results->next(active_job);
- */
-	return;
-}
+    return;
+}*/
    

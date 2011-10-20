@@ -2,6 +2,7 @@
 #define JOB_LIST
 
 #include <stdio.h>
+#include <stdbool.h>
 
 typedef struct JobElement{
   char* jobname;
@@ -9,8 +10,18 @@ typedef struct JobElement{
   int length_time;
   struct JobElement *next;
 } JobElement;
- 
-JobElement* FileToJobList(FILE* file);
 
+typedef struct JobListContainer{
+	JobElement* head;
+	JobElement* tail;
+} JobListContainer;
+ 
+void addJob(JobListContainer* list,JobElement* job);
+JobElement* nextJobToSchedule(JobListContainer* list);
+bool empty(JobListContainer* list);
+void printOrder(JobListContainer* list);
+
+void sortOnRemainingTime(JobListContainer* list);
+void sortOnArrivalTime(JobListContainer* list);
 
 #endif

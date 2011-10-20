@@ -17,6 +17,8 @@
 #include "sort.h"
 #include "debug.h"
 
+#include "fileToJobList.h"
+
 
 JobElement* FileToJobList(FILE* file){
   JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));

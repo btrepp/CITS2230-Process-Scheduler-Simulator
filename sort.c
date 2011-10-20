@@ -8,8 +8,6 @@
 #include "debug.h"
 #include "jobList.h"
 
-void printOrder(JobElement* start);
-
 int listLength(JobElement* Job){
 	int count=0;
 	while(Job!=NULL){
@@ -27,7 +25,7 @@ JobElement* sort(JobElement* Job)
 	int jobCounter=listLength(Job);
 
 	JobElement* firstJob; // container for the first job in the linked list
-	printOrder(Job);
+	//printOrder(Job);
 	JobElement* temp1; // temp container
 	JobElement* previous; // container to store the job behind the current job we are looking at
 	//JobElement* window; // a "window" iterator
@@ -110,7 +108,7 @@ JobElement* sort(JobElement* Job)
 		  }
 		  debug_print_string("Finished iteration \n");
 		}
-		printOrder(firstJob);
+		//printOrder(firstJob);
 		i++;
 	}
 	debug_print_string("Finished sorting \n");
@@ -208,7 +206,7 @@ JobElement* sortshortest(JobElement* Job)
 		  }
 		  debug_print_string("Finished iteration \n");
 		}
-		printOrder(firstJob);
+//		printOrder(firstJob);
 		i++;
 	}
 	debug_print_string("Finished sorting \n");
@@ -218,7 +216,7 @@ JobElement* sortshortest(JobElement* Job)
 	
 	return firstJob;
 }
-
+/*
 void printOrder(JobElement* start){
 	JobElement* current =start;
 	char string[200];
@@ -232,4 +230,4 @@ void printOrder(JobElement* start){
 	debug_print("%s\n",string);
 }
 
-
+*/
