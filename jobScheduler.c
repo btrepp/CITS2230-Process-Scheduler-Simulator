@@ -67,11 +67,11 @@ void sort_time_length(JobElement* joblist) {
 }
 
 int incrementClock(){
-   debug_print("Clock at :%d \n",current_clock);
    if(active_job!=NULL)
-        debug_print("Job Finishes at: %d\n",active_job_scheduled_at+active_job->length_time);
+        debug_print("Clock at:%d, Job Finishes at: %d\n",
+		current_clock,active_job_scheduled_at+active_job->length_time);
    else
-        debug_print_string("System Idling\n");
+        debug_print("Clock at:%d, System Idling\n",current_clock);
 
 
    //check if active job should still be running
@@ -207,6 +207,9 @@ void roundrobin(){
     insertScheduleElement(jobsch);
 }
 
+void sortCPUList(){}
+
+
 void shortprocessnext(){
  
    //unscheduled_jobs_head = sortremainingtime(unscheduled_jobs_head);
@@ -226,7 +229,7 @@ void shortprocessnext(){
 }
 
 void shortremainingtime(){
-  /* if(active_job!=NULL){
+/*   if(active_job!=NULL){
       perror("Active Job should always be NULL in SRT!");
       exit(EXIT_FAILURE);
    }
