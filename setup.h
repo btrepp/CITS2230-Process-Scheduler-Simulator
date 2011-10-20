@@ -1,2 +1,3 @@
 #include <stdlib.h>
-FILE* setup(int argc, char *argv[]);
+#include "virtualCPU.h"
+FILE* setup(int argc, char *argv[],VirtualCPU* cpu);

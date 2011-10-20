@@ -14,18 +14,23 @@
 
 
 int main(int argc, char* argv[]) {
-
-  
-	FILE* pFile = setup(argc,argv);
-	//pFile = fopen("Jobs.txt","r");
-	JobElement* list=FileToJobList(pFile); // list would be sorted on arrival time
-
 	VirtualCPU cpu0;
 	initCPU(&cpu0);
 
+  
+	FILE* pFile = setup(argc,argv,&cpu0);
+	JobElement* list=FileToJobList(pFile); // list would be sorted on arrival time
+
+
 	int clock=0;
+	int totalclocks=0;
+	int startclocks=0;
 	while(list!=NULL){
 		while(list!=NULL && clock+1==list->arrival_time){
+			if(totalclocks==0)
+				startclocks=clock;
+			totalclocks+=list->length_time;
+
 			debug_print("%s: %d @ %d \n",list->jobname,list->arrival_time,clock);
 			addJobToCPU(&cpu0,list);		
 			list=list->next;
@@ -36,11 +41,11 @@ int main(int argc, char* argv[]) {
 		
 	}
 
-	while(isCPUIdle(&cpu0)==false && clock<20)
+	while(isCPUIdle(&cpu0)==false && clock<startclocks+2*totalclocks)
 		clock=incrementClock(&cpu0);
 	printf("Complete!\n");
 
-	JobSchedule* results = getResults();
+	JobSchedule* results = getResults(&cpu0)->head;
 	printResultsCompressed(results);
 
 	//printf(" [%s] \n", FileToJobList);

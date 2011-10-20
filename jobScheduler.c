@@ -59,11 +59,6 @@
 }
 */
 
-JobSchedule* getResults(JobScheduleContainer* list){
-	return list->head;
-}
-
-
 void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){
 	if(list->tail==NULL)
  	       list->head=jobsch;

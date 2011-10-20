@@ -3,13 +3,14 @@
 #include <string.h>
 #include <errno.h>
 
-#include "jobScheduler.h"
+//#include "jobScheduler.h"
+#include "virtualCPU.h"
 
 void printUsage(){
   printf("TODO\n");
 }
 
-FILE* setup(int argc, char *argv[]){
+FILE* setup(int argc, char *argv[], VirtualCPU* cpu){
  
   if(argc<3){
     printUsage();
@@ -45,12 +46,12 @@ FILE* setup(int argc, char *argv[]){
   }
   
   if(strcmp(scheduler,"RR")==0){
-	setRoundRobinQuanta(quantum);
-	setSchedulingMode(RR);
+	setRoundRobinCPUQuanta(cpu,quantum);
+	setSchedulingMode(cpu,RR);
   }
-  if(strcmp(scheduler,"FCFS")==0)	setSchedulingMode(FCFS);
-  if(strcmp(scheduler,"SPN")==0) setSchedulingMode(SPN);
-  if(strcmp(scheduler,"SRT")==0) setSchedulingMode(SRT);
+  if(strcmp(scheduler,"FCFS")==0)setSchedulingMode(cpu,FCFS);
+  if(strcmp(scheduler,"SPN")==0) setSchedulingMode(cpu,SPN);
+  if(strcmp(scheduler,"SRT")==0) setSchedulingMode(cpu,SRT);
   
   return fp;
 }

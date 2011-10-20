@@ -153,3 +153,7 @@ void setSchedulingMode(VirtualCPU* cpu,schedule_mode stuff){
   cpu->mode=stuff;
 }
 
+JobScheduleContainer* getResults(VirtualCPU* cpu){
+	return cpu->scheduled;
+}
+
