@@ -13,7 +13,9 @@
 
 int main(int argc, char* argv[]) {
 
+  
 	FILE* pFile = setup(argc,argv);
+	//pFile = fopen("Jobs.txt","r");
 	JobElement* list= FileToJobList(pFile); // list would be sorted on arrival time
 	
 	int clock=0;
@@ -24,6 +26,8 @@ int main(int argc, char* argv[]) {
 			list=list->next;
 		}
 		clock=incrementClock();
+// 		debug_print("%s \n",list->jobname);
+// 		list=list->next;
 		
 	}
 

@@ -123,6 +123,7 @@ JobElement* sort(JobElement* Job)
 // Takes in the Joblist and sort its from its length_time
 JobElement* sortshortest(JobElement* Job)
 {
+    int jobCounter=listLength(Job);
 	JobElement* firstJob; // container for the first job in the linked list
 	//printOrder(Job);
 	JobElement* temp1; // temp container
@@ -154,15 +155,13 @@ JobElement* sortshortest(JobElement* Job)
 	{
 	  //debug_print("i = %d \n", i);
 	  Job = startList; // Soo that the search can start in the front again
-	  previous = before; // This gives the problem..ideally it should be some pointer to
-				// the startList ie previous->next = startList;
+	  previous = before; 
 		for(j = 0; j < jobCounter-1; j++)
 		{
 		  if(Job->next != NULL )
 		  {
 			if( Job->length_time > Job->next->length_time) // current job is older than the next job, must swap
 			{ 
-			  // This partially working rite until the  2nd loop finishes
 				temp1 = Job;
 				Job = Job->next;
 				temp1->next = Job->next;
@@ -171,7 +170,7 @@ JobElement* sortshortest(JobElement* Job)
 				Job = Job->next;
 				Job->next = temp1->next;
 				previous = previous->next;
-				// neeed to compare the currentjob with first job to see which is the newest jobCounter
+				// neeed to compare the currentjob with first job to see which is the newest job
 				if(Job->length_time < firstJob->length_time)
 				{
 				  firstJob = Job; // Now first Job is set
@@ -201,7 +200,7 @@ JobElement* sortshortest(JobElement* Job)
 				if(Job != previous) previous = previous->next; // for the at the start case where job and previous are the same
 				Job = Job->next;
 			}
-			//window = window->next;
+			
 			//debug_print("current window = %s \n", window->jobname);
 			//if(Job->next == NULL) debug_print_string("Job next is null \n"); 
 		  }
