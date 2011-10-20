@@ -3,7 +3,6 @@
 //#include "JobList.c"
 #include "jobList.h"
 #include "jobScheduler.h"
-#include "printResults.h"
 #include "virtualCPU.h"
 #include "setup.h"
 #include "fileToJobList.h"

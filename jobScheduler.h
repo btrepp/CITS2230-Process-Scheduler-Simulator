@@ -19,4 +19,11 @@ typedef struct JobScheduleContainer{
 
 void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch);
 
+
+//these are in printResults.c to save space
+void printResults(JobSchedule* start);
+void printResultsCompressed(JobSchedule* start);
+
+
+
 #endif
