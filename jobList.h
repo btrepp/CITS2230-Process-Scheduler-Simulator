@@ -8,6 +8,7 @@ typedef struct JobElement{
   char* jobname;
   int arrival_time;
   int length_time;
+  int pages; // number of pages required
   struct JobElement *next;
 } JobElement;
 

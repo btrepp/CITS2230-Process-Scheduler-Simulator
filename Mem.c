@@ -50,7 +50,8 @@ void storemem(JobElement* list)
     //		perform an LRU in the virtual mem(200) to remove the 
     //		pages from it.
     if(PageCount != 0 ){
-      LRU(physmem, PageCount); // Removes LRU pages, need PageCount just incase the first removal is not sufficient
+     // LRU(physmem, PageCount); // Removes LRU pages, need PageCount just incase the first removal is not sufficient
+      qsort(table, 50, sizeof(frame),LRU); // sorts the physical mem with LRU at the start of the array
       for(int k = 0, k <50, k++)
       {
 	if(physmem[k] == NULL) {
@@ -61,3 +62,5 @@ void storemem(JobElement* list)
     }
   }
 }
+
+
