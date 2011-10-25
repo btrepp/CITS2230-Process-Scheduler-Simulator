@@ -15,9 +15,27 @@
  *  appear first in the frame.
  */
 
-int LRU(const void *a, const void *b)
+#define FRAME_SIZE 50
+
+int sortbyLRU(const void *a, const void *b)
 {
   a = (frame *)a;
   b = (frame *)b;
   return (a->time - b->time);
+}
+
+// need the structures inplace to implement it properly
+void LRU(somequeue* queue, int frames)
+{
+ 
+ qsort(queue, FRAME_SIZE, sizeof(frame), sortbyLRU);
+ // now in tempQueue the least recently used will be in the front
+ int i;
+ // removing the least recently used frames from the memory
+ for(i = 0; i<frames; i++)
+ {
+   queue[i]->finished = true; // boolean value to state that the frame is free to use
+   
+ }
+// ....? is this it? it cant be it...can it?
 }
