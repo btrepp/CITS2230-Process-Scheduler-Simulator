@@ -6,7 +6,7 @@ will only print  if
 is present
 */
 
-
+#include <stdio.h>
 
 #ifdef DEBUG
 #define DEBUG_TEST 1
