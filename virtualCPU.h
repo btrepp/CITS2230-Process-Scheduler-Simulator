@@ -11,7 +11,8 @@ typedef struct VirtualCPU{
 	JobElement* active_job;
 	int active_job_scheduled_at;
 	JobElement* remaining_active_job;
-
+	
+	bool memory_management;
 	int current_clock;
 	int roundRobinQuanta;
 
@@ -31,6 +32,7 @@ void setRoundRobinCPUQuanta(VirtualCPU* cpu, int quanta);
 void setSchedulingMode(VirtualCPU* cpu,schedule_mode mode);
 bool isCPUIdle(VirtualCPU* cpu);
 void initCPU(VirtualCPU* cpu);
+void setMemoryManagement(VirtualCPU* cpu, bool value);
 
 JobScheduleContainer* getResults(VirtualCPU* cpu);
 

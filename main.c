@@ -11,7 +11,6 @@
 #define DEBUG
 #include "debug.h"
 
-
 int main(int argc, char* argv[]) {
 	VirtualCPU cpu0;
 	initCPU(&cpu0);

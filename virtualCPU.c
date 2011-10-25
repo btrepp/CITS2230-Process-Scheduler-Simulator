@@ -8,10 +8,10 @@
 
 
 
-void firstComeFirstServe(VirtualCPU* cpu);
-void roundrobin(VirtualCPU* cpu);
-void shortprocessnext(VirtualCPU* cpu);
-void shortremainingtime(VirtualCPU* cpu);
+JobSchedule* firstComeFirstServe(VirtualCPU* cpu);
+JobSchedule* roundrobin(VirtualCPU* cpu);
+JobSchedule* shortprocessnext(VirtualCPU* cpu);
+JobSchedule* shortremainingtime(VirtualCPU* cpu);
 
 void initCPU(VirtualCPU* cpu){
 	memset(cpu,0,sizeof(*cpu));
@@ -19,9 +19,6 @@ void initCPU(VirtualCPU* cpu){
 	cpu->scheduled = malloc(sizeof(*(cpu->scheduled)));
 
 }
-
-
-
 
 int incrementClock(VirtualCPU* cpu){
    if(cpu->active_job!=NULL)
@@ -36,30 +33,36 @@ int incrementClock(VirtualCPU* cpu){
    }
 
    if(cpu->active_job!=NULL) return cpu->current_clock++;
-  
+ 
+   JobSchedule* job=NULL; 
    switch(cpu->mode){
     case FCFS:
-	firstComeFirstServe(cpu);
+	job=firstComeFirstServe(cpu);
 	break;
 	
     case RR:
-      roundrobin(cpu);
-      break;
+        job=roundrobin(cpu);
+        break;
       
     case SPN:
-      shortprocessnext(cpu);
-      break;
+        job=shortprocessnext(cpu);
+        break;
       
     case SRT:
-      shortremainingtime(cpu);
-      break;
-     } 
+        job=shortremainingtime(cpu);
+        break;
+    }
+
+   if(job!=NULL)
+     insertScheduleElement(cpu->scheduled,job);
+		
+ 
    return cpu->current_clock++;
 }
 
-void firstComeFirstServe(VirtualCPU* cpu){
+JobSchedule* firstComeFirstServe(VirtualCPU* cpu){
     if(cpu->active_job!=NULL)
-      return;
+      return NULL;
 
     //sort(cpu->unscheduled_jobs->head); // it should be sorted already due to FCFS!.
     
@@ -67,16 +70,19 @@ void firstComeFirstServe(VirtualCPU* cpu){
     cpu->active_job_scheduled_at=cpu->current_clock;
     
     //if we have no jobs to schedule, idle
-    if(cpu->active_job==NULL) return;
+    if(cpu->active_job==NULL) return NULL;
     //create result
     JobSchedule* scheduledjob = malloc(sizeof(*scheduledjob));
     scheduledjob->jobname = cpu->active_job->jobname;
     scheduledjob->start_time = cpu->current_clock;
     scheduledjob->running_time = cpu->active_job->length_time;
-    insertScheduleElement(cpu->scheduled,scheduledjob);
+    
+    return scheduledjob;
+
+    //insertScheduleElement(cpu->scheduled,scheduledjob);
 }
 
-void roundrobin(VirtualCPU* cpu){
+JobSchedule* roundrobin(VirtualCPU* cpu){
 
     if(cpu->roundRobinQuanta<1){
         perror("Quanta can't be less than 1");
@@ -84,7 +90,7 @@ void roundrobin(VirtualCPU* cpu){
     }
 
     if(cpu->active_job!=NULL)
-      return;
+      return NULL;
 
     if(cpu->remaining_active_job!=NULL){
         addJob(cpu->unscheduled_jobs, cpu->remaining_active_job);
@@ -93,7 +99,7 @@ void roundrobin(VirtualCPU* cpu){
 
     JobElement* temp=nextJobToSchedule(cpu->unscheduled_jobs);
 
-    if(temp==NULL) return;
+    if(temp==NULL) return NULL;
 
     JobElement* remainingquantjob=NULL;
     cpu->active_job=malloc(sizeof(*(cpu->active_job)));
@@ -113,26 +119,34 @@ void roundrobin(VirtualCPU* cpu){
     jobsch->jobname= temp->jobname;
     jobsch->start_time = cpu->current_clock;
     jobsch->running_time = cpu->active_job->length_time; 
-                   
-    insertScheduleElement(cpu->scheduled,jobsch);
+                  
+    return jobsch; 
+    //insertScheduleElement(cpu->scheduled,jobsch);
 }
 
-void shortprocessnext(VirtualCPU* cpu){
+JobSchedule* shortprocessnext(VirtualCPU* cpu){
    sortOnRemainingTime(cpu->unscheduled_jobs);
-   firstComeFirstServe(cpu);
+   return firstComeFirstServe(cpu);
 }
 
-void shortremainingtime(VirtualCPU* cpu){
+JobSchedule* shortremainingtime(VirtualCPU* cpu){
     sortOnRemainingTime(cpu->unscheduled_jobs);
     setRoundRobinCPUQuanta(cpu,1);
-    roundrobin(cpu);
+    JobSchedule* jobsch = roundrobin(cpu);
 
+    //put the job back on the queued list, so it can be scheduled straight away if it needs to
     if(cpu->remaining_active_job!=NULL){
         addJob(cpu->unscheduled_jobs, cpu->remaining_active_job);
         cpu->remaining_active_job=NULL;
     }
 
-   return;
+    //if the previous recorded job is this job just increment that value
+    if(jobsch!=NULL && cpu->scheduled->tail!=NULL && 
+	strcmp(jobsch->jobname,cpu->scheduled->tail->jobname)==0){ 
+	cpu->scheduled->tail->running_time+= jobsch->running_time;
+	return NULL;
+    }	
+   return jobsch;
 }
 
 void addJobToCPU(VirtualCPU* cpu, JobElement* job){
@@ -155,5 +169,9 @@ void setSchedulingMode(VirtualCPU* cpu,schedule_mode stuff){
 
 JobScheduleContainer* getResults(VirtualCPU* cpu){
 	return cpu->scheduled;
+}
+
+void setMemoryManagement(VirtualCPU* cpu, bool value){
+	cpu->memory_management=value;
 }
 
