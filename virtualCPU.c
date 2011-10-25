@@ -29,6 +29,13 @@ int incrementClock(VirtualCPU* cpu){
 
    if(cpu->active_job!=NULL && (cpu->active_job_scheduled_at+cpu->active_job->length_time-1 < cpu->current_clock)){
    	debug_print("Active Job completed @ %d\n",cpu->current_clock);
+
+	//if this was the last schedule for this job
+	if(cpu->memory_management && cpu->active_job!=NULL &&
+				 cpu->active_job->completed==true){
+		debug_print("Job %s, memory reclaimed!\n",cpu->active_job->jobname);
+		//free(active_job)
+	}
 	cpu->active_job=NULL;
    }
 
@@ -56,9 +63,12 @@ int incrementClock(VirtualCPU* cpu){
    if(job!=NULL)
      insertScheduleElement(cpu->scheduled,job);
 		
+    // memory stuff
+
  
    return cpu->current_clock++;
 }
+
 
 JobSchedule* firstComeFirstServe(VirtualCPU* cpu){
     if(cpu->active_job!=NULL)
@@ -68,6 +78,7 @@ JobSchedule* firstComeFirstServe(VirtualCPU* cpu){
     
     cpu->active_job=nextJobToSchedule(cpu->unscheduled_jobs);
     cpu->active_job_scheduled_at=cpu->current_clock;
+    markJobAsComplete(cpu->active_job,true); 
     
     //if we have no jobs to schedule, idle
     if(cpu->active_job==NULL) return NULL;
@@ -114,6 +125,9 @@ JobSchedule* roundrobin(VirtualCPU* cpu){
         cpu->active_job->length_time=cpu->roundRobinQuanta;
         cpu->remaining_active_job=remainingquantjob;
     }
+    else{
+	markJobAsComplete(cpu->active_job,true);  
+    }
     
     JobSchedule* jobsch = malloc(sizeof(*jobsch));
     jobsch->jobname= temp->jobname;
@@ -150,6 +164,7 @@ JobSchedule* shortremainingtime(VirtualCPU* cpu){
 }
 
 void addJobToCPU(VirtualCPU* cpu, JobElement* job){
+	markJobAsComplete(job,false);  
 	addJob(cpu->unscheduled_jobs,job);
 }
 

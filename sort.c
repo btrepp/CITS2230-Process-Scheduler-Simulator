@@ -4,7 +4,7 @@
 #include <string.h>
 
 
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 #include "jobList.h"
 

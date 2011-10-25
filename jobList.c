@@ -4,7 +4,7 @@
 #include "sort.h"
 #include <string.h>
 
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 
@@ -80,4 +80,9 @@ void sortOnArrivalTime(JobListContainer* list){
 	list->tail=temp;
     }
 }	
+
+void markJobAsComplete(JobElement* job, bool complete){
+	if(job!=NULL)
+		job->completed=complete;	
+}
 

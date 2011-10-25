@@ -8,7 +8,7 @@
 #include "fileToJobList.h"
 #include <string.h>
 
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 int main(int argc, char* argv[]) {
@@ -24,7 +24,7 @@ int main(int argc, char* argv[]) {
 	int totalclocks=0;
 	int startclocks=0;
 	while(list!=NULL){
-		while(list!=NULL && clock+1==list->arrival_time){
+		while(list!=NULL && clock==list->arrival_time){
 			if(totalclocks==0)
 				startclocks=clock;
 			totalclocks+=list->length_time;
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
 			addJobToCPU(&cpu0,list);		
 			list=list->next;
 		}
-		clock=incrementClock(&cpu0);
+		clock=incrementClock(&cpu0)+1;
 // 		debug_print("%s \n",list->jobname);
 // 		list=list->next;
 		
@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
 	while(isCPUIdle(&cpu0)==false && clock<startclocks+2*totalclocks)
 		clock=incrementClock(&cpu0);
-	printf("Complete!\n");
+	debug_print_string("Complete!\n");
 
 	JobSchedule* results = getResults(&cpu0)->head;
 	printResultsCompressed(results);

@@ -9,6 +9,7 @@ typedef struct JobElement{
   int arrival_time;
   int length_time;
   int pages; // number of pages required
+  bool completed;
   struct JobElement *next;
 } JobElement;
 
@@ -24,5 +25,5 @@ void printOrder(JobListContainer* list);
 
 void sortOnRemainingTime(JobListContainer* list);
 void sortOnArrivalTime(JobListContainer* list);
-
+void markJobAsComplete(JobElement* job, bool complete);
 #endif
