@@ -50,7 +50,7 @@ JobElement* FileToJobList(FILE* file){
       }
       
       //if too many values
-      if(i>3){
+      if(i>4){
 	fprintf(stderr,"Too many values for Job, please check data file!\n");
 	for(int j=0;j<=i;j++)
 		debug_print("%d:%s\n",j,results[j]);
@@ -68,7 +68,11 @@ JobElement* FileToJobList(FILE* file){
       thisOne->jobname= jobname;
       thisOne->arrival_time= atoi(results[1]);
       thisOne->length_time= atoi(results[2]);
-     
+	
+       if(i==4)
+		thisOne->pages = atoi(results[3]);
+    
+ 
       //assign container
 	  if(jobCounter == 0){
 		firstelement= thisOne;

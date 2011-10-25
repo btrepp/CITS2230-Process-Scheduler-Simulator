@@ -18,11 +18,23 @@ typedef struct FreePageListContainer{
 	FreePageListElement * tail;
 }FreePageListContainer;
 
+typedef struct JobInMemory{
+	char* jobname;
+	int pages_for_job;
+	Page** pages;
+	struct JobInMemory* next;
+} JobInMemory;
 
-void initFreePageList(FreePageListContainer* cont);
+typedef struct JobInMemoryList{
+	JobInMemory* head;
+	JobInMemory* tail;
+} JobInMemoryList; 
+
 
 void addFreePage(FreePageListContainer* cont, Page* pagetoadd);
+Page* getFirstFreePage(FreePageListContainer* cont);
 
+void addJobInMemory(JobInMemoryList* cont, JobInMemory* memjob);
 
 #endif
 

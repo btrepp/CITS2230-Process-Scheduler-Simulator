@@ -3,6 +3,7 @@
 
 #include "jobList.h"
 #include "jobScheduler.h"
+#include "memory.h"
 
 typedef struct VirtualCPU{
         JobListContainer* unscheduled_jobs;
@@ -17,6 +18,9 @@ typedef struct VirtualCPU{
 	int roundRobinQuanta;
 
 	int mode;
+
+	Memory* physical_memory;
+
 
 } VirtualCPU;
 

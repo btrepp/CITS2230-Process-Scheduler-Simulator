@@ -6,7 +6,8 @@
 #define DEBUG
 #include "debug.h"
 
-
+#define PAGES_PHYSICAL 50
+#define PAGES_SIZE	4
 
 JobSchedule* firstComeFirstServe(VirtualCPU* cpu);
 JobSchedule* roundrobin(VirtualCPU* cpu);
@@ -18,6 +19,8 @@ void initCPU(VirtualCPU* cpu){
 	cpu->unscheduled_jobs = malloc(sizeof(*(cpu->unscheduled_jobs)));
 	cpu->scheduled = malloc(sizeof(*(cpu->scheduled)));
 
+	cpu->physical_memory = malloc(sizeof(*(cpu->physical_memory)));
+	initMemory(cpu->physical_memory,PAGES_PHYSICAL,PAGES_SIZE);
 }
 
 int incrementClock(VirtualCPU* cpu){
@@ -64,6 +67,10 @@ int incrementClock(VirtualCPU* cpu){
      insertScheduleElement(cpu->scheduled,job);
 		
     // memory stuff
+   if(cpu->memory_management){
+	
+   }
+
 
  
    return cpu->current_clock++;
