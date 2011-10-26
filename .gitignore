@@ -1,4 +1,4 @@
 CITS2230CpuSimulator
-vout.file
+*.file
 *~
 *.o

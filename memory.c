@@ -37,40 +37,67 @@ JobInMemory* loadJob(Memory* mem, JobElement* job, int clock){
 		exit(EXIT_FAILURE);
 	}
 
+	JobInMemory* newjobinmemory =NULL;
 	//search for existing job in mem->jobs	
-	
-	//else create new job
-	JobInMemory* newjobinmemory = malloc(sizeof(*newjobinmemory));
-	memset(newjobinmemory, 0, sizeof(*newjobinmemory));
-
-	newjobinmemory->jobname = job->jobname;
-	newjobinmemory->pages_for_job = job->pages;
-	newjobinmemory->pages = malloc(sizeof(*newjobinmemory->pages)*job->pages);
-
-	int i=0;	
-	for(i=0;i<job->pages;i++){
-		Page* thispage = getFirstFreePage(mem->freepages);
-		if(thispage==NULL) {
-			debug_print("Memory full, will perform LRU to get %d pages\n",job->pages-i);
+	JobInMemory* curjob = mem->jobs->head;
+	while(curjob!=NULL){
+		if(strcmp(curjob->jobname,job->jobname)==0){
+			debug_print("Found job: %s already in memory \n", curjob->jobname);
+			newjobinmemory = curjob;
 			break;
-		}
-		
-		thispage->jobname = job->jobname;
-		thispage->last_accessed_at = clock;
-		
-		(newjobinmemory->pages)[i]=thispage;
+		}	
+		curjob=curjob->next;
 	}
-	debug_print("Job:%s has %d pages in memory\n",newjobinmemory->jobname,i);
+	int pages=0;
+	if(newjobinmemory!=NULL){
+		//verify jobs
+		for(int j=0;j<newjobinmemory->pages_for_job;j++){
+                        Page* thispage = (newjobinmemory->pages)[j];
+                        
+			if(thispage!=NULL && 
+				strcmp(thispage->jobname, newjobinmemory->jobname)==0) {
+				debug_print("Found page: %d for job %s \n", 
+					PAGELOC(thispage,mem->freepages), newjobinmemory->jobname);
+                        	thispage->last_accessed_at = clock;
+                        	pages++;
+			}
+		}
+	}
+	else{
+		//else create new job
+		newjobinmemory = malloc(sizeof(*newjobinmemory));
+		memset(newjobinmemory, 0, sizeof(*newjobinmemory));
+		newjobinmemory->jobname = job->jobname;
+		newjobinmemory->pages_for_job = job->pages;
+		newjobinmemory->pages = malloc(sizeof(*newjobinmemory->pages)*job->pages);
+
+			
+		for(int i=0;i<job->pages;i++){
+			Page* thispage = getFirstFreePage(mem->freepages);
+			if(thispage==NULL) {
+				debug_print("Memory full, will perform LRU to get %d pages\n",job->pages-i);
+				break;
+			}
+		
+			thispage->jobname = job->jobname;
+			thispage->last_accessed_at = clock;
+		
+			(newjobinmemory->pages)[i]=thispage;
+			pages=i;
+		}
+		addJobInMemory(mem->jobs,newjobinmemory);
+	}
+	debug_print("Job:%s has %d pages in memory\n",newjobinmemory->jobname,pages);
 
 	//LRU stuff
 
 
-	addJobInMemory(mem->jobs,newjobinmemory);
 	return newjobinmemory;
 }
 
 void freeJob(Memory* mem, JobElement* job){
 	debug_print("Freeing Job:%s from memory\n",job->jobname);
+
 	JobInMemory* jobmem = mem->jobs->head;	
 	JobInMemory* prev = NULL;
 	while(jobmem!=NULL){
@@ -78,7 +105,7 @@ void freeJob(Memory* mem, JobElement* job){
 		if(strcmp(jobmem->jobname,job->jobname)==0){
 			//Mark all pages in this container as free
 			for(int i=0;i<jobmem->pages_for_job;i++){
-				Page* pagetofree = (jobmem->pages)[i];
+				Page* pagetofree = jobmem->pages[i];
 				if(pagetofree==NULL){
 					debug_print("Page %d used by job: %s is not in memory\n",
 							i,jobmem->jobname);

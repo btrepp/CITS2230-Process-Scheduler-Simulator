@@ -1,6 +1,8 @@
 #ifndef MEM_PAGE
 #define MEM_PAGE
 
+#define PAGELOC(page,list) ((int) ((page)->location_in_memory - (list)->firstpagelocation))
+
 
 typedef struct Page{
 	char* jobname;

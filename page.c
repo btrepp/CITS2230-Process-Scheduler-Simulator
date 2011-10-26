@@ -4,6 +4,8 @@
 #define DEBUG
 #include "debug.h"
 
+
+
 void addFreePage(FreePageListContainer* list, Page* page){
   FreePageListElement* newfreepage = malloc(sizeof(*newfreepage));
   newfreepage->emptypage=page;

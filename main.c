@@ -13,9 +13,9 @@
 
 void dumpMemory(int clock, Settings* set, Memory* mem){
    if(set->mem_management && clock-1==set->mem_quanta){
-	fprintf(set->memoutput,"\nJobs held in physical memory frames at t=%d\n\n",clock);
+	fprintf(set->memoutput,"\nJobs held in physical memory frames at t=%d\n\n",clock-1);
 	printPages(mem, set->memoutput);
-	fprintf(set->memoutput,"\nContent of physical memory at t=%d\n\n",clock);
+	fprintf(set->memoutput,"\nContent of physical memory at t=%d\n\n",clock-1);
 	printMemory(mem,set->memoutput);	
    }
 }

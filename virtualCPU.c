@@ -20,7 +20,6 @@ void initCPU(VirtualCPU* cpu){
 	cpu->scheduled = malloc(sizeof(*(cpu->scheduled)));
 
 	cpu->physical_memory = malloc(sizeof(*(cpu->physical_memory)));
-	initMemory(cpu->physical_memory,PAGES_PHYSICAL,PAGES_SIZE);
 }
 
 int incrementClock(VirtualCPU* cpu){
@@ -141,13 +140,14 @@ JobSchedule* roundrobin(VirtualCPU* cpu){
     cpu->active_job_scheduled_at=cpu->current_clock;
 
     memcpy(cpu->active_job,temp,sizeof(*(cpu->active_job)));
-   
+    markJobAsComplete(cpu->active_job,false);
     if(temp->length_time>cpu->roundRobinQuanta){
 	remainingquantjob = malloc(sizeof(*remainingquantjob));
         memcpy(remainingquantjob,temp,sizeof(*remainingquantjob));
         remainingquantjob->length_time= temp->length_time-cpu->roundRobinQuanta;
         cpu->active_job->length_time=cpu->roundRobinQuanta;
         cpu->remaining_active_job=remainingquantjob;
+    
     }
     else{
 	markJobAsComplete(cpu->active_job,true);  
@@ -212,5 +212,6 @@ JobScheduleContainer* getResults(VirtualCPU* cpu){
 
 void setMemoryManagement(VirtualCPU* cpu, bool value){
 	cpu->memory_management=value;
+	if(value==true)
+		initMemory(cpu->physical_memory,PAGES_PHYSICAL,PAGES_SIZE);
 }
-
