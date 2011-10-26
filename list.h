@@ -16,17 +16,30 @@
 
 #define LIST_INSERT_AFTER(type) \
  void list_##type##_insert_after(list_node_##type *node, type *data) { \
-    	list_node_##type* newnode = malloc(sizeof(*newnode)); \
-	list_node_##type* nextnode = node->next; \
+	list_node_##type* newnode = malloc(sizeof(*newnode)); \
 	newnode->data= data; \
+	list_node_##type* nextnode = node->next; \
 	newnode->next = nextnode; \
 	node->next = newnode; \
-  } 
+  }
 
 #define LIST_APPEND(type) \
+  void list_##type##_insert_first(list_##type* container, type* data){ \
+	 list_node_##type* newnode = malloc(sizeof(*newnode)); \
+         newnode->data= data; \
+	 newnode->next=NULL; \
+	 container->head = newnode; \
+	 container->tail = newnode; \
+   } \
   void list_##type##_append(list_##type * container, type* data) { \
-	list_##type##_insert_after(container->tail, data); \
-  }
+	if(container->tail==NULL)\
+		list_##type##_insert_first(container,data);\
+	else {\
+		list_##type##_insert_after(container->tail, data); \
+  		container->tail=container->tail->next; \
+	 }\
+   }
+	 
 
 #define LIST_POP(type) \
   type* list_##type##_pop(list_##type* container){ \
@@ -34,7 +47,7 @@
 	list_node_##type* first = container->head;\
 	container->head=first->next; \
 	type* data = first->data; \
-	free(container->head); \
+	free(first); \
 	\
 	if(container->head==NULL) container->tail=NULL; \
   	return data;\

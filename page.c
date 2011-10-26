@@ -5,7 +5,9 @@
 #include "debug.h"
 
 
+LIST(Page);
 
+/*
 void addFreePage(FreePageListContainer* list, Page* page){
   FreePageListElement* newfreepage = malloc(sizeof(*newfreepage));
   newfreepage->emptypage=page;
@@ -37,7 +39,7 @@ Page* getFirstFreePage(FreePageListContainer* list){
 	free(returnelem);
         return clearpage;
 }
-
+*/
 void addJobInMemory(JobInMemoryList* list, JobInMemory* newjob){
   if(list->head==NULL)
         list->head=newjob;
@@ -45,6 +47,15 @@ void addJobInMemory(JobInMemoryList* list, JobInMemory* newjob){
         list->tail->next=newjob;
   list->tail=newjob;
 }
+
+void printFreePages(list_Page* list, FILE* out){
+	list_node_Page* current = list->head;
+	while(current!=NULL){
+		fprintf(out,"Free page: %d\n", (int) current->data->location_in_memory);
+		current=current->next;
+	}
+}
+
 
 void printPagesInMemory(Page** firstpage, int numpages){
 	return;

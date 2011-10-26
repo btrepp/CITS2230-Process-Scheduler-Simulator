@@ -4,7 +4,8 @@
 typedef struct Memory{
 	char* memspace;
 	Page** pages;
-	FreePageListContainer * freepages;
+//	FreePageListContainer * freepages;
+	list_Page* freepages;	
 	JobInMemoryList* jobs;
 	int number_of_pages;
 	int pagesize; 
