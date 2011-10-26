@@ -24,26 +24,29 @@ typedef struct FreePageListContainer{
 */
 LIST_PROTOTYPE(Page);
 
+
 typedef struct JobInMemory{
 	char* jobname;
 	int pages_for_job;
 	Page** pages;
-	struct JobInMemory* next;
+//	struct JobInMemory* next;
 } JobInMemory;
 
+LIST_PROTOTYPE(JobInMemory);
+/*
 typedef struct JobInMemoryList{
 	JobInMemory* head;
 	JobInMemory* tail;
 } JobInMemoryList; 
-
+*/
 
 //void addFreePage(FreePageListContainer* cont, Page* pagetoadd);
 //Page* getFirstFreePage(FreePageListContainer* cont);
 
 void printFreePages(list_Page* list, FILE* out);
 
-void addJobInMemory(JobInMemoryList* cont, JobInMemory* memjob);
-void printJobsInMemory(JobInMemoryList* cont);
+//void addJobInMemory(JobInMemoryList* cont, JobInMemory* memjob);
+//void printJobsInMemory(JobInMemoryList* cont);
 
 #endif
 

@@ -6,7 +6,7 @@
 
 
 LIST(Page);
-
+LIST(JobInMemory);
 /*
 void addFreePage(FreePageListContainer* list, Page* page){
   FreePageListElement* newfreepage = malloc(sizeof(*newfreepage));
@@ -40,14 +40,14 @@ Page* getFirstFreePage(FreePageListContainer* list){
         return clearpage;
 }
 */
-void addJobInMemory(JobInMemoryList* list, JobInMemory* newjob){
+/*void addJobInMemory(JobInMemoryList* list, JobInMemory* newjob){
   if(list->head==NULL)
         list->head=newjob;
   else
         list->tail->next=newjob;
   list->tail=newjob;
 }
-
+*/
 void printFreePages(list_Page* list, FILE* out){
 	list_node_Page* current = list->head;
 	while(current!=NULL){
@@ -60,11 +60,11 @@ void printFreePages(list_Page* list, FILE* out){
 void printPagesInMemory(Page** firstpage, int numpages){
 	return;
 }
-void printJobsInMemory(JobInMemoryList* list){
-	JobInMemory* current = list->head;
+void printJobsInMemory(list_JobInMemory* list){
+	list_node_JobInMemory* current = list->head;
 	fprintf(stdout,"\nJobs In Memory \n\n");
 	while(current!=NULL){
-		fprintf(stdout,"\t%s\n",current->jobname);
+		fprintf(stdout,"\t%s\n",current->data->jobname);
 		current=current->next;
 	}
 	fprintf(stdout,"\n");

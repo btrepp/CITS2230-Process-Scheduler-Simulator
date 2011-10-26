@@ -8,6 +8,7 @@
       list_node_##type *tail; \
   } list_##type;
 
+
 #define LIST_PROTOTYPE(type) \
   DEFINE_LIST(type) \
   void list_##type##_insert_after(list_node_##type *node, type *data);\

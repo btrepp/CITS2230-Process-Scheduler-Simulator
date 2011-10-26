@@ -6,7 +6,8 @@ typedef struct Memory{
 	Page** pages;
 //	FreePageListContainer * freepages;
 	list_Page* freepages;	
-	JobInMemoryList* jobs;
+	list_JobInMemory* jobs;
+	//JobInMemoryList* jobs;
 	int number_of_pages;
 	int pagesize; 
 } Memory;
