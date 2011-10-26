@@ -31,7 +31,7 @@ Page* getFirstFreePage(FreePageListContainer* list){
                 list->tail=NULL;
 	}
 	Page* clearpage = returnelem->emptypage;
-	debug_print("Returning empty page: %d\n", (int)clearpage->location_in_memory-list->firstpagelocation);
+	debug_print("Available empty page: %d\n", (int)clearpage->location_in_memory-list->firstpagelocation);
 	free(returnelem);
         return clearpage;
 }

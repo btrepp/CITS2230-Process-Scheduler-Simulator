@@ -12,10 +12,10 @@
 #include "debug.h"
 
 void dumpMemory(int clock, Settings* set, Memory* mem){
-   if(set->mem_management && clock==set->mem_quanta){
-	fprintf(set->memoutput,"Jobs held in physical memory frames at t=%d\n",clock);
+   if(set->mem_management && clock-1==set->mem_quanta){
+	fprintf(set->memoutput,"\nJobs held in physical memory frames at t=%d\n\n",clock);
 	printPages(mem, set->memoutput);
-	fprintf(set->memoutput,"Content of physical memory at t=%d\n\n",clock);
+	fprintf(set->memoutput,"\nContent of physical memory at t=%d\n\n",clock);
 	printMemory(mem,set->memoutput);	
    }
 }
