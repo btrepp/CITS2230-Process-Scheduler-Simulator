@@ -48,7 +48,7 @@ int incrementClock(VirtualCPU* cpu){
 //   fprintf(stdout,"Jobs held in physical memory at %d\n",cpu->current_clock);
    //printMemory(cpu->physical_memory);
 
-   if(cpu->active_job!=NULL) return cpu->current_clock++;
+   if(cpu->active_job!=NULL) return ++cpu->current_clock;
  
    JobSchedule* job=NULL; 
    switch(cpu->mode){
@@ -90,7 +90,7 @@ int incrementClock(VirtualCPU* cpu){
 	}	 
    }
 
-   return cpu->current_clock++;
+   return ++cpu->current_clock;
 }
 
 

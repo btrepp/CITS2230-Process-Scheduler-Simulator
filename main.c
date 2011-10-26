@@ -32,9 +32,9 @@ int main(int argc, char* argv[]) {
 	setRoundRobinCPUQuanta(&cpu0,set->rr_quanta);
 	setMemoryManagement(&cpu0,set->mem_management);
 
-	int clock=0;
+	int clock=cpu0.current_clock;
 	int totalclocks=0;
-	int startclocks=0;
+	int startclocks=clock;
 	while(list!=NULL){
 		while(list!=NULL && clock==list->arrival_time){
 			if(totalclocks==0)
@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
 			addJobToCPU(&cpu0,list);		
 			list=list->next;
 		}
-		clock=incrementClock(&cpu0)+1;
+		clock=incrementClock(&cpu0);
 		dumpMemory(clock,set,cpu0.physical_memory);
 
 // 		debug_print("%s \n",list->jobname);
@@ -55,7 +55,7 @@ int main(int argc, char* argv[]) {
 
 	while(isCPUIdle(&cpu0)==false /*&& clock<startclocks+2*totalclocks*/){
 		debug_print("Incrementing clock %d\n",clock);
-		clock=incrementClock(&cpu0)+1;
+		clock=incrementClock(&cpu0);
 		dumpMemory(clock,set,cpu0.physical_memory);
 	}
 	debug_print_string("Complete!\n");
