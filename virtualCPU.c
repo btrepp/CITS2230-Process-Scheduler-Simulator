@@ -36,8 +36,9 @@ int incrementClock(VirtualCPU* cpu){
 	//if this was the last schedule for this job
 	if(cpu->memory_management && cpu->active_job!=NULL &&
 				 cpu->active_job->completed==true){
+		//mark this job as complete in the memory
+		freeJob(cpu->physical_memory, cpu->active_job);
 		debug_print("Job %s, memory reclaimed!\n",cpu->active_job->jobname);
-		//free(active_job)
 	}
 	cpu->active_job=NULL;
    }
@@ -67,8 +68,8 @@ int incrementClock(VirtualCPU* cpu){
      insertScheduleElement(cpu->scheduled,job);
 		
     // memory stuff
-   if(cpu->memory_management){
-	
+   if(cpu->active_job!=NULL && cpu->memory_management){
+	loadJob(cpu->physical_memory,cpu->active_job,cpu->current_clock);	
    }
 
 

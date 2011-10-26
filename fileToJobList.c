@@ -71,7 +71,8 @@ JobElement* FileToJobList(FILE* file){
 	
        if(i==4)
 		thisOne->pages = atoi(results[3]);
-    
+       else
+		thisOne->pages =-1; 
  
       //assign container
 	  if(jobCounter == 0){

@@ -1,6 +1,7 @@
 #include <stdlib.h>
 
 #include "page.h"
+#define DEBUG
 #include "debug.h"
 
 void addFreePage(FreePageListContainer* list, Page* page){
@@ -13,20 +14,24 @@ void addFreePage(FreePageListContainer* list, Page* page){
         list->tail->next=newfreepage;
   list->tail=newfreepage;
 
-  debug_print("Marked page:%s[%d]\n",page->jobname, (int) page->location_in_memory);
+  debug_print("Marked free page:%s [%d]\n",page->jobname, (int) (page->location_in_memory-list->firstpagelocation));
 }
 
 Page* getFirstFreePage(FreePageListContainer* list){
-        if(list->head==NULL)
+        if(list->head==NULL){
+		debug_print_string("No free pages left\n");
                 return NULL;
-
+	}
+	
         FreePageListElement* returnelem = list->head;
         list->head = list->head->next;
 
-        if(list->head==NULL)
+        if(list->head==NULL){
+		debug_print_string("Returning last empty page\n");
                 list->tail=NULL;
-
+	}
 	Page* clearpage = returnelem->emptypage;
+	debug_print("Returning empty page: %d\n", (int)clearpage->location_in_memory-list->firstpagelocation);
 	free(returnelem);
         return clearpage;
 }

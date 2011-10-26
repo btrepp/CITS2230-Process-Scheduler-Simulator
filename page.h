@@ -14,6 +14,7 @@ typedef struct FreePageListElement{
 }FreePageListElement;	
 
 typedef struct FreePageListContainer{
+	int firstpagelocation;
 	FreePageListElement * head;
 	FreePageListElement * tail;
 }FreePageListContainer;
