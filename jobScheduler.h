@@ -4,6 +4,8 @@
 #include "jobList.h"
 #include <stdbool.h>
 
+#include "list.h"
+#include <stdlib.h>
 typedef struct JobSchedule{
   char* jobname;
   int amount;
@@ -11,6 +13,8 @@ typedef struct JobSchedule{
   int running_time;
   struct JobSchedule *next;
 } JobSchedule;
+
+LIST_PROTOTYPE(JobSchedule);
 
 typedef struct JobScheduleContainer{
         JobSchedule* head;

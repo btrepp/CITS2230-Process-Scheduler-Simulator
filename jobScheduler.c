@@ -10,6 +10,9 @@
 #include <string.h>
 #include <stdbool.h>
 
+LIST(JobSchedule);
+
+
 void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){
 	if(list->tail==NULL)
  	       list->head=jobsch;
