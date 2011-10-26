@@ -7,6 +7,7 @@
 
 void initMemory(Memory* mem, int numpages, int pagesize){
 	mem->number_of_pages = numpages;
+	mem->pagesize= pagesize;
 	mem->memspace = malloc(sizeof(*(mem->memspace))*numpages*pagesize);
 	
 	mem->pages = malloc(sizeof(*(mem->pages))*numpages);	
@@ -28,7 +29,7 @@ void initMemory(Memory* mem, int numpages, int pagesize){
 	memset(mem->jobs,0,sizeof(*(mem->jobs)));
 }
 
-void loadJob(Memory* mem, JobElement* job, int clock){
+JobInMemory* loadJob(Memory* mem, JobElement* job, int clock){
 	if(job->pages==-1){
 		fprintf(stderr,"Memory management enabled without setting pages \n"
 			"Please check the Job file\n"
@@ -45,8 +46,9 @@ void loadJob(Memory* mem, JobElement* job, int clock){
 	newjobinmemory->jobname = job->jobname;
 	newjobinmemory->pages_for_job = job->pages;
 	newjobinmemory->pages = malloc(sizeof(*newjobinmemory->pages)*job->pages);
-	
-	for(int i=0;i<job->pages;i++){
+
+	int i=0;	
+	for(i=0;i<job->pages;i++){
 		Page* thispage = getFirstFreePage(mem->freepages);
 		if(thispage==NULL) {
 			debug_print("Memory full, will perform LRU to get %d pages\n",job->pages-i);
@@ -58,13 +60,13 @@ void loadJob(Memory* mem, JobElement* job, int clock){
 		
 		(newjobinmemory->pages)[i]=thispage;
 	}
+	debug_print("Job:%s has %d pages in memory\n",newjobinmemory->jobname,i);
 
 	//LRU stuff
 
 
-	//add newjobinmemory to activejob queue
-
 	addJobInMemory(mem->jobs,newjobinmemory);
+	return newjobinmemory;
 }
 
 void freeJob(Memory* mem, JobElement* job){
@@ -100,3 +102,22 @@ void freeJob(Memory* mem, JobElement* job){
 	}
 
 }
+
+void printPages(Memory* mem, FILE*output){
+	for(int i=0;i<mem->number_of_pages;i++){
+		fprintf(output,"frame %d -- %s\n", i, mem->pages[i]->jobname);
+	}
+}
+
+
+void printMemory(Memory* mem,FILE* output){
+//	printJobsInMemory(mem->jobs);	
+
+	for(int i=0;i<mem->number_of_pages;i++){
+		for(int j=0;j<mem->pagesize;j++){
+			fprintf(output,"%c",mem->memspace[mem->pagesize*i+j]);
+		}
+		fprintf(output,"\n");
+	}
+}
+

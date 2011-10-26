@@ -1,3 +1,17 @@
 #include <stdlib.h>
 #include "virtualCPU.h"
-FILE* setup(int argc, char *argv[],VirtualCPU* cpu);
+
+typedef struct Settings{
+	FILE* jobinput;
+	FILE* memoutput;
+
+	bool mem_management;	
+	schedule_mode mode;
+	int rr_quanta;
+	int mem_quanta;
+
+} Settings;
+
+
+
+Settings* setup(int argc, char *argv[]);

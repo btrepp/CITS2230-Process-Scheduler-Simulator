@@ -7,9 +7,12 @@ typedef struct Memory{
 	FreePageListContainer * freepages;
 	JobInMemoryList* jobs;
 	int number_of_pages;
-
+	int pagesize; 
 } Memory;
 
 void initMemory(Memory* mem, int numpages,int pagesize);
-void loadJob(Memory* mem, JobElement* job, int clock);
+JobInMemory* loadJob(Memory* mem, JobElement* job, int clock);
 void freeJob(Memory* mem, JobElement* job);
+
+void printMemory(Memory* mem,FILE* stream);
+void printPages(Memory* mem, FILE* stream);

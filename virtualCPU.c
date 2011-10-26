@@ -2,7 +2,7 @@
 #include "sort.h"
 #include <stdlib.h>
 #include <string.h>
-
+#include <ctype.h>
 #define DEBUG
 #include "debug.h"
 
@@ -43,6 +43,11 @@ int incrementClock(VirtualCPU* cpu){
 	cpu->active_job=NULL;
    }
 
+   //print out memory status
+   //
+//   fprintf(stdout,"Jobs held in physical memory at %d\n",cpu->current_clock);
+   //printMemory(cpu->physical_memory);
+
    if(cpu->active_job!=NULL) return cpu->current_clock++;
  
    JobSchedule* job=NULL; 
@@ -64,16 +69,27 @@ int incrementClock(VirtualCPU* cpu){
         break;
     }
 
+
    if(job!=NULL)
      insertScheduleElement(cpu->scheduled,job);
 		
     // memory stuff
    if(cpu->active_job!=NULL && cpu->memory_management){
-	loadJob(cpu->physical_memory,cpu->active_job,cpu->current_clock);	
+	debug_print("Loading: %s, into memory\n",cpu->active_job->jobname);
+	JobInMemory* allocpages=loadJob(cpu->physical_memory,cpu->active_job,cpu->current_clock);	
+	//fill pages with data
+	int jobnamelength = strlen(cpu->active_job->jobname);
+	for(int i=0;i<allocpages->pages_for_job;i++){
+		Page* thispage = allocpages->pages[i];
+		for(int i=0;i<cpu->physical_memory->pagesize;i++){
+			int indexinname = jobnamelength-1-((i+1)%2);
+			char bytetostore = cpu->active_job->jobname[indexinname];
+			if(!isdigit(bytetostore)) bytetostore= '0';
+			*(thispage->location_in_memory+i)= bytetostore;
+		}
+	}	 
    }
 
-
- 
    return cpu->current_clock++;
 }
 
@@ -177,7 +193,7 @@ void addJobToCPU(VirtualCPU* cpu, JobElement* job){
 }
 
 bool isCPUIdle(VirtualCPU* cpu){
-     if(empty(cpu->unscheduled_jobs) && cpu->active_job!=NULL)
+     if(empty(cpu->unscheduled_jobs) && cpu->active_job==NULL)
 	return true;
      return false;
 }

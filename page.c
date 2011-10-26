@@ -44,3 +44,16 @@ void addJobInMemory(JobInMemoryList* list, JobInMemory* newjob){
   list->tail=newjob;
 }
 
+void printPagesInMemory(Page** firstpage, int numpages){
+	return;
+}
+void printJobsInMemory(JobInMemoryList* list){
+	JobInMemory* current = list->head;
+	fprintf(stdout,"\nJobs In Memory \n\n");
+	while(current!=NULL){
+		fprintf(stdout,"\t%s\n",current->jobname);
+		current=current->next;
+	}
+	fprintf(stdout,"\n");
+}
+

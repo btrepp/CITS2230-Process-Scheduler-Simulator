@@ -21,7 +21,6 @@ typedef struct VirtualCPU{
 
 	Memory* physical_memory;
 
-
 } VirtualCPU;
 
 typedef int schedule_mode;

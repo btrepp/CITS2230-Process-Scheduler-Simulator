@@ -36,6 +36,7 @@ void addFreePage(FreePageListContainer* cont, Page* pagetoadd);
 Page* getFirstFreePage(FreePageListContainer* cont);
 
 void addJobInMemory(JobInMemoryList* cont, JobInMemory* memjob);
+void printJobsInMemory(JobInMemoryList* cont);
 
 #endif
 
