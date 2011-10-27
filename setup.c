@@ -12,7 +12,8 @@
 #include "virtualCPU.h"
 
 void printUsage(int argc, char*argv[]){
-  printf("usage:\n %s [sv] Scheduler {Quantum} Input File {Memory Quantum} \n [-f] memoryoutputfile", argv[0]);
+  printf("usage:\n %s [sv] Scheduler {Quantum} Input File {Memory Quantum} \n"
+	" [-f] memoryoutputfile [-h] htmloutputfile", argv[0]);
   printf("\n \t -s : Run the scheduler without memory management (default)\n");
   printf("\t -v : Run the scheduler with memory management\n");
   printf("\t Scheduler : Scheduling algorithm to run, options are \n");
@@ -24,6 +25,7 @@ void printUsage(int argc, char*argv[]){
   printf("\tInput File : The file to load jobs from\n");
   printf("\t{Memory Quantum} : Print memory usage every Quantum clock ticks (only if -v is set) \n");
   printf("\t -f filename : File to print the memory usage to (defaults to vout.file) \n");
+  printf("\n\t [BONUS] -h filename : Writes a HTML memory visualization out to filename \n");
   printf("\n");
 }
 
@@ -36,19 +38,21 @@ Settings* setup(int argc, char *argv[]){
 
   int c;
   char* memfilename="vout.file";
-  bool mem_management=false;  
-while ((c = getopt (argc, argv, "svf:")) != -1)
+  char* htmlfilename = "";
+  bool mem_management=false; 
+while ((c = getopt (argc, argv, "svfh:")) != -1)
          switch (c){
            case 's':
              mem_management=false;
-	     //setMemoryManagement(cpu,false);
              break;
            case 'v':
 	     mem_management=true;
-             //setMemoryManagement(cpu,true);
              break;
 	   case 'f':
 		memfilename=optarg;
+		break;
+	   case 'h':
+		htmlfilename=optarg;
 		break;
            case '?':
              if (optopt == 'f')
@@ -114,15 +118,22 @@ while ((c = getopt (argc, argv, "svf:")) != -1)
   }
   
    FILE* memout =NULL;
+   FILE* htmlout = NULL;
   if(mem_management){
 	memout = fopen(memfilename,"w");
+
+	if(strlen(htmlfilename)>0){
+		htmlout = fopen(htmlfilename,"w");
+	}
   }
 
   Settings* returnpair = malloc(sizeof(*returnpair));
   returnpair->jobinput = fp;
   returnpair->memoutput = memout;
+  returnpair->htmloutput = htmlout;
   returnpair->mem_management = mem_management;
   returnpair->mem_quanta = mem_quanta;
+
 
    if(strcmp(scheduler,"RR")==0){
 	returnpair->mode=RR;

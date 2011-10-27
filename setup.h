@@ -4,6 +4,7 @@
 typedef struct Settings{
 	FILE* jobinput;
 	FILE* memoutput;
+	FILE* htmloutput;
 
 	bool mem_management;	
 	schedule_mode mode;

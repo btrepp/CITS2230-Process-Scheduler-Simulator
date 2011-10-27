@@ -3,12 +3,14 @@
 void scriptJS(FILE* out);
 
 void header(FILE* out){
+	if(out==NULL) return ;
 	fprintf(out, "<html><head><title>Memory Output</title>\n");
 	fprintf(out, "<script \"text/javascript\">\n");
 	scriptJS(out);
 }
 
 void scriptJS(FILE* out){
+	if(out==NULL) return ;
 	fprintf(out, "function memElement( jobname){\n"
 		"   return { \n"
 		"      jobname:jobname\n"
@@ -31,6 +33,7 @@ void scriptJS(FILE* out){
 }
 
 void footer(FILE* out){
+	if(out==NULL) return ;
 	fprintf(out, "document.write(\"<p>\" + Date() + \"</p>\");");
 
 	fprintf(out, "printClock(0);");
@@ -42,6 +45,7 @@ void footer(FILE* out){
 }
 
 void memToJavascriptArray(FILE* out, Memory* mem){
+	if(out==NULL) return ;
 	fprintf(out,"var memspace = [];\n");
 	for(int i=0;i<mem->number_of_pages; i++){
 		if(mem->pages[i]->job!=NULL)

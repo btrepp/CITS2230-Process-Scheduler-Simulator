@@ -13,10 +13,9 @@
 #include "debug.h"
 
 
-FILE* outhtml ;
 
 void dumpMemory(int clock, Settings* set, Memory* mem){
-    memToJavascriptArray(outhtml, mem);  
+    memToJavascriptArray(set->htmloutput, mem);  
 
     if(set->mem_management && clock-1==set->mem_quanta){
 	fprintf(set->memoutput,"\nJobs held in physical memory frames at t=%d\n\n",clock-1);
@@ -27,13 +26,12 @@ void dumpMemory(int clock, Settings* set, Memory* mem){
 }
 
 int main(int argc, char* argv[]) {
-	outhtml = fopen("out.html","w");
-	header(outhtml);
 	VirtualCPU cpu0;
 	initCPU(&cpu0);
 
   
 	Settings* set = setup(argc,argv);
+	header(set->htmloutput);
 	list_Job* list=FileToJobList(set->jobinput); // list would be sorted on arrival time
 
 	setSchedulingMode(&cpu0,set->mode);
@@ -77,7 +75,7 @@ int main(int argc, char* argv[]) {
 	//printResults(results);
 	printResultsCompressed(results);
 
-	footer(outhtml);
+	footer(set->htmloutput);
 	//printf(" [%s] \n", FileToJobList);
 	return 0;
 }
