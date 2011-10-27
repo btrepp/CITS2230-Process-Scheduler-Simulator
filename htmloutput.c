@@ -44,7 +44,7 @@ void footer(FILE* out){
 void memToJavascriptArray(FILE* out, Memory* mem){
 	fprintf(out,"var memspace = [];\n");
 	for(int i=0;i<mem->number_of_pages; i++){
-		fprintf(out, "memspace.push(memElement(\"%s\"));\n", mem->pages[i]->jobname);
+		fprintf(out, "memspace.push(memElement(\"%s\"));\n", mem->pages[i]->job->jobname);
 	}
 	fprintf(out, "all.push(memspace);\n");
 }

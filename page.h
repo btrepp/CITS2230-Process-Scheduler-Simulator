@@ -5,9 +5,10 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include "list.h"
+#include "job.h"
 
 typedef struct Page{
-	char* jobname;
+	Job* job;
 	char* location_in_memory;
 	int last_accessed_at;
 } Page;
@@ -27,7 +28,7 @@ LIST_PROTOTYPE(Page);
 
 
 typedef struct JobInMemory{
-	char* jobname;
+	Job* job;
 	int pages_for_job;
 	Page** pages;
 //	struct JobInMemory* next;

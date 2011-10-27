@@ -64,7 +64,7 @@ void printJobsInMemory(list_JobInMemory* list){
 	list_node_JobInMemory* current = list->head;
 	fprintf(stdout,"\nJobs In Memory \n\n");
 	while(current!=NULL){
-		fprintf(stdout,"\t%s\n",current->data->jobname);
+		fprintf(stdout,"\t%s\n",current->data->job->jobname);
 		current=current->next;
 	}
 	fprintf(stdout,"\n");
