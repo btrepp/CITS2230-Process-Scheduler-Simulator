@@ -28,7 +28,7 @@ void initMemory(Memory* mem, int numpages, int pagesize){
 	
 	for(int i=0;i<numpages;i++){
 		mem->pages[i] = malloc(sizeof(Page));
-
+		memset(mem->pages[i],0,sizeof(Page));
 		mem->pages[i]->location_in_memory = &(mem->memspace[pagesize*i]);
 		markPageAsFree(mem,mem->pages[i]);
 	}
@@ -60,7 +60,7 @@ bool assignPage(Memory* mem,JobInMemory* job,int index,int clock){
         thispage->job = job->job;
         thispage->last_accessed_at = clock;
 
-        (job->pages)[index]=thispage;
+        job->pages[index]=thispage;
 	
 	list_Page_append(mem->LRU_list, thispage);
 	return true;
@@ -88,6 +88,7 @@ JobInMemory* createJob(Memory* mem, Job* job, int clock){
 	newjobinmemory->job = job;
 	newjobinmemory->pages_for_job = job->pages;
 	newjobinmemory->pages = malloc(sizeof(*newjobinmemory->pages)*job->pages);
+	memset(newjobinmemory->pages,0,(sizeof(*newjobinmemory->pages)*job->pages));
 	list_JobInMemory_append(mem->jobs,newjobinmemory);
 	return newjobinmemory;
 }
@@ -109,9 +110,10 @@ JobInMemory* loadJob(Memory* mem, Job* job, int clock){
 
 	if(curjob!=NULL){
 		for(int j=0;j<curjob->pages_for_job;j++){
-                        Page* thispage = (curjob->pages)[j];
+                        Page* thispage = curjob->pages[j];
 			if(thispage!=NULL && 
-				thispage->job== job) {
+				thispage->job==job &&
+				thispage->last_accessed_at != clock) {
 				debug_print("Found page: %d for job %s \n", 
 					PAGELOC(thispage,mem->pages[0]), job->jobname);
                         	thispage->last_accessed_at = clock;

@@ -65,7 +65,7 @@ int main(int argc, char* argv[]) {
 // 		list=list->next;
 		
 	}
-
+	free(list);
 	while(isCPUIdle(&cpu0)==false /*&& clock<startclocks+2*totalclocks*/){
 		debug_print("Incrementing clock %d\n",clock);
 		clock=incrementClock(&cpu0);

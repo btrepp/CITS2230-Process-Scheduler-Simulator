@@ -24,8 +24,7 @@ void initCPU(VirtualCPU* cpu){
 	cpu->physical_memory = malloc(sizeof(*(cpu->physical_memory)));
 }
 
-int incrementClock(VirtualCPU* cpu){
-   
+void unloadProcessor(VirtualCPU* cpu){ 
    if(cpu->active_job!=NULL)
         debug_print("Clock at:%d, Job  %s Finishes at: %d\n",
 		cpu->current_clock,
@@ -41,7 +40,8 @@ int incrementClock(VirtualCPU* cpu){
 
 	if(cpu->remaining_active_job->time_remaining==0){
 		debug_print("Job %s completed\n",cpu->active_job->job->jobname);
-		
+		free(cpu->remaining_active_job);	
+		cpu->remaining_active_job=NULL;
 		if(cpu->memory_management){
 			//mark this job as complete in the memory
 			freeJob(cpu->physical_memory, cpu->active_job->job);
@@ -51,11 +51,24 @@ int incrementClock(VirtualCPU* cpu){
 	cpu->active_job=NULL;
 
    }
+}
 
-   //print out memory status
-   //
-//   fprintf(stdout,"Jobs held in physical memory at %d\n",cpu->current_clock);
-   //printMemory(cpu->physical_memory);
+void populateMemoryWithData(JobInMemory* allocpages, int pagesize){
+	int jobnamelength = strlen(allocpages->job->jobname);
+	for(int i=0;i<allocpages->pages_for_job;i++){
+		Page* thispage = allocpages->pages[i];
+		for(int i=0;i<pagesize;i++){
+			int indexinname = jobnamelength-1-((i+1)%2);
+			char bytetostore = allocpages->job->jobname[indexinname];
+			if(!isdigit(bytetostore)) bytetostore= '0';
+			*(thispage->location_in_memory+i)= bytetostore;
+		}
+	}
+}
+
+
+int incrementClock(VirtualCPU* cpu){
+    unloadProcessor(cpu);  
 
    if(cpu->active_job!=NULL) return ++cpu->current_clock;
  
@@ -81,23 +94,14 @@ int incrementClock(VirtualCPU* cpu){
 
    if(job!=NULL)
        list_JobScheduleResult_append(cpu->scheduled, job);
-	//insertScheduleElement(cpu->scheduled,job);
 		
     // memory stuff
    if(cpu->active_job!=NULL && cpu->memory_management){
 	debug_print("Loading: %s, into memory\n",cpu->active_job->job->jobname);
 	JobInMemory* allocpages=loadJob(cpu->physical_memory,cpu->active_job->job,cpu->current_clock);	
+	
 	//fill pages with data
-	int jobnamelength = strlen(cpu->active_job->job->jobname);
-	for(int i=0;i<allocpages->pages_for_job;i++){
-		Page* thispage = allocpages->pages[i];
-		for(int i=0;i<cpu->physical_memory->pagesize;i++){
-			int indexinname = jobnamelength-1-((i+1)%2);
-			char bytetostore = cpu->active_job->job->jobname[indexinname];
-			if(!isdigit(bytetostore)) bytetostore= '0';
-			*(thispage->location_in_memory+i)= bytetostore;
-		}
-	}	 
+	populateMemoryWithData(allocpages, cpu->physical_memory->pagesize); 
    }
 
    return ++cpu->current_clock;
