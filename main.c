@@ -73,8 +73,8 @@ int main(int argc, char* argv[]) {
 	}
 	debug_print_string("Complete!\n");
 
-	list_JobSchedule* results = getResults(&cpu0);
-	printResults(results);
+	list_JobScheduleResult* results = getResults(&cpu0);
+	//printResults(results);
 	printResultsCompressed(results);
 
 	footer(outhtml);

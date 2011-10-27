@@ -5,14 +5,21 @@
 #include "jobScheduler.h"
 #include "memory.h"
 
+typedef struct UnprocessedJob{
+	Job* job;
+	int time_remaining;
+} UnprocessedJob;	
+
+LIST_PROTOTYPE(UnprocessedJob);
+
+
 typedef struct VirtualCPU{
         //JobListContainer* unscheduled_jobs;
-        list_Job* unscheduled_jobs;
-	list_JobSchedule* scheduled;
+        list_UnprocessedJob* unscheduled_jobs;
+	list_JobScheduleResult* scheduled;
 	
-	Job* active_job;
-	int active_job_scheduled_at;
-	Job* remaining_active_job;
+	JobScheduleResult* active_job;
+	UnprocessedJob* remaining_active_job;
 	
 	bool memory_management;
 	int current_clock;
@@ -38,6 +45,6 @@ bool isCPUIdle(VirtualCPU* cpu);
 void initCPU(VirtualCPU* cpu);
 void setMemoryManagement(VirtualCPU* cpu, bool value);
 
-list_JobSchedule* getResults(VirtualCPU* cpu);
+list_JobScheduleResult* getResults(VirtualCPU* cpu);
 
 #endif 

@@ -82,8 +82,8 @@ void sortOnArrivalTime(JobListContainer* list){
     }
 }	
 */
-void markJobAsComplete(Job* job, bool complete){
+/*void markJobAsComplete(Job* job, bool complete){
 	if(job!=NULL)
 		job->completed=complete;	
 }
-
+*/

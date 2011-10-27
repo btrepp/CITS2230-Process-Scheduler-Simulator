@@ -3,11 +3,11 @@
 #include <string.h>
 #include <stdlib.h>
 
-void printResults(list_JobSchedule* list) {
- list_node_JobSchedule* start = list->head;
+void printResults(list_JobScheduleResult* list) {
+ list_node_JobScheduleResult* start = list->head;
  while(start != NULL ){
-      JobSchedule* data = start->data;
-      printf(data->jobname);
+      JobScheduleResult* data = start->data;
+      printf(data->job->jobname);
       printf(" ");
     
       for(int i=0;i<1;i++){
@@ -19,25 +19,24 @@ void printResults(list_JobSchedule* list) {
       
 }
 
-void printResultsCompressed(list_JobSchedule* list){
-  list_node_JobSchedule* start = list->head;
+void printResultsCompressed(list_JobScheduleResult* list){
+  list_node_JobScheduleResult* start = list->head;
   while(start!=NULL){
-	JobSchedule* data = start->data;
-	if(data->jobname!=NULL){
-		printf(data->jobname);
+	JobScheduleResult* data = start->data;
+	if(data->job!=NULL){
+		printf(data->job->jobname);
 		printf(" ");
 
-		list_node_JobSchedule* temp=start;
+		list_node_JobScheduleResult* temp=start;
 		//find next job schedule
 		while(temp!=NULL){
-			JobSchedule* tempdata = temp->data;
-			if(tempdata->jobname!=NULL){
-				int strcmpresult=strcmp(data->jobname,tempdata->jobname);	
-				if(strcmpresult==0){
+			JobScheduleResult* tempdata = temp->data;
+			if(tempdata->job!=NULL){
+				if(tempdata->job == data->job){
 					printf("(%d,%d) ",tempdata->start_time,tempdata->running_time);
 					//remove the element we printed (simplest way is to set name to null)
 					if(temp!=start)
-						tempdata->jobname=NULL;
+						tempdata->job=NULL;
 				}
 			}
 			temp=temp->next;

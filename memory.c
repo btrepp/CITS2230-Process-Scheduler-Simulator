@@ -192,7 +192,11 @@ void freeJob(Memory* mem, Job* job){
 
 void printPages(Memory* mem, FILE*output){
 	for(int i=0;i<mem->number_of_pages;i++){
-		fprintf(output,"frame %d -- %s\n", i, mem->pages[i]->job->jobname);
+		if(mem->pages[i]->job!=NULL)
+			fprintf(output,"frame %d -- %s\n", i, mem->pages[i]->job->jobname);
+		else
+			fprintf(output,"frame %d -- null \n",i);
+		
 	}
 }
 

@@ -10,7 +10,6 @@ typedef struct Job{
   int arrival_time;
   int length_time;
   int pages; // number of pages required
-  bool completed;
 } Job;
 
 LIST_PROTOTYPE(Job);

@@ -9,7 +9,7 @@
 #include <string.h>
 #include <stdbool.h>
 
-LIST(JobSchedule);
+LIST(JobScheduleResult);
 
 /*
 void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){

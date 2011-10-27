@@ -6,27 +6,18 @@
 
 #include "list.h"
 #include <stdlib.h>
-typedef struct JobSchedule{
-  char* jobname;
-  int amount;
+
+typedef struct JobScheduleResult{
+  Job* job;
   int start_time;
   int running_time;
-//  struct JobSchedule *next;
-} JobSchedule;
+} JobScheduleResult;
 
-LIST_PROTOTYPE(JobSchedule);
-/*
-typedef struct JobScheduleContainer{
-        JobSchedule* head;
-        JobSchedule* tail;
-} JobScheduleContainer;
-*/
-//void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch);
-
+LIST_PROTOTYPE(JobScheduleResult);
 
 //these are in printResults.c to save space
-void printResults(list_JobSchedule* start);
-void printResultsCompressed(list_JobSchedule* start);
+void printResults(list_JobScheduleResult* start);
+void printResultsCompressed(list_JobScheduleResult* start);
 
 
 
