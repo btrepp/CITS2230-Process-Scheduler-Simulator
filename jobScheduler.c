@@ -12,7 +12,7 @@
 
 LIST(JobSchedule);
 
-
+/*
 void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){
 	if(list->tail==NULL)
  	       list->head=jobsch;
@@ -20,4 +20,4 @@ void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){
         	list->tail->next=jobsch;
 	 list->tail=jobsch;
 }
-
+*/

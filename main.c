@@ -7,12 +7,18 @@
 #include "setup.h"
 #include "fileToJobList.h"
 #include <string.h>
+#include "htmloutput.h"
 
 #define DEBUG
 #include "debug.h"
 
+
+FILE* outhtml ;
+
 void dumpMemory(int clock, Settings* set, Memory* mem){
-   if(set->mem_management && clock-1==set->mem_quanta){
+    memToJavascriptArray(outhtml, mem);  
+
+    if(set->mem_management && clock-1==set->mem_quanta){
 	fprintf(set->memoutput,"\nJobs held in physical memory frames at t=%d\n\n",clock-1);
 	printPages(mem, set->memoutput);
 	fprintf(set->memoutput,"\nContent of physical memory at t=%d\n\n",clock-1);
@@ -21,6 +27,8 @@ void dumpMemory(int clock, Settings* set, Memory* mem){
 }
 
 int main(int argc, char* argv[]) {
+	outhtml = fopen("out.html","w");
+	header(outhtml);
 	VirtualCPU cpu0;
 	initCPU(&cpu0);
 
@@ -60,7 +68,7 @@ int main(int argc, char* argv[]) {
 	}
 	debug_print_string("Complete!\n");
 
-	JobSchedule* results = getResults(&cpu0)->head;
+	list_JobSchedule* results = getResults(&cpu0);
 	printResultsCompressed(results);
 
 	//printf(" [%s] \n", FileToJobList);

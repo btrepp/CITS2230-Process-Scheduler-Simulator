@@ -7,7 +7,7 @@
 
 typedef struct VirtualCPU{
         JobListContainer* unscheduled_jobs;
-        JobScheduleContainer* scheduled;
+        list_JobSchedule* scheduled;
 	
 	JobElement* active_job;
 	int active_job_scheduled_at;
@@ -37,6 +37,6 @@ bool isCPUIdle(VirtualCPU* cpu);
 void initCPU(VirtualCPU* cpu);
 void setMemoryManagement(VirtualCPU* cpu, bool value);
 
-JobScheduleContainer* getResults(VirtualCPU* cpu);
+list_JobSchedule* getResults(VirtualCPU* cpu);
 
 #endif 

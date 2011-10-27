@@ -70,7 +70,8 @@ int incrementClock(VirtualCPU* cpu){
 
 
    if(job!=NULL)
-     insertScheduleElement(cpu->scheduled,job);
+       list_JobSchedule_append(cpu->scheduled, job);
+	//insertScheduleElement(cpu->scheduled,job);
 		
     // memory stuff
    if(cpu->active_job!=NULL && cpu->memory_management){
@@ -180,8 +181,8 @@ JobSchedule* shortremainingtime(VirtualCPU* cpu){
 
     //if the previous recorded job is this job just increment that value
     if(jobsch!=NULL && cpu->scheduled->tail!=NULL && 
-	strcmp(jobsch->jobname,cpu->scheduled->tail->jobname)==0){ 
-	cpu->scheduled->tail->running_time+= jobsch->running_time;
+	strcmp(jobsch->jobname,cpu->scheduled->tail->data->jobname)==0){ 
+	cpu->scheduled->tail->data->running_time+= jobsch->running_time;
 	return NULL;
     }	
    return jobsch;
@@ -206,7 +207,7 @@ void setSchedulingMode(VirtualCPU* cpu,schedule_mode stuff){
   cpu->mode=stuff;
 }
 
-JobScheduleContainer* getResults(VirtualCPU* cpu){
+list_JobSchedule* getResults(VirtualCPU* cpu){
 	return cpu->scheduled;
 }
 
