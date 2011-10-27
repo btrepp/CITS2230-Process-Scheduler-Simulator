@@ -2,3 +2,4 @@ CITS2230CpuSimulator
 *.file
 *~
 *.o
+*.html

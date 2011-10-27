@@ -132,8 +132,12 @@ JobInMemory* loadJob(Memory* mem, Job* job, int clock){
 				free(it);
 			}
 			else{
-				assignPage(mem,curjob,j,clock);
-			}	
+				if(!assignPage(mem,curjob,j,clock)){
+					fprintf(stderr,"Unable to assign pages, system error\n");
+					exit(EXIT_FAILURE);
+				}
+			}
+			pages++;	
 		}
 		debug_print("Job:%s has loaded %d pages in memory\n",job->jobname,pages);
 	}
