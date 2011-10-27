@@ -100,7 +100,7 @@ JobSchedule* firstComeFirstServe(VirtualCPU* cpu){
 
     //sort(cpu->unscheduled_jobs->head); // it should be sorted already due to FCFS!.
     
-    cpu->active_job=nextJobToSchedule(cpu->unscheduled_jobs);
+    cpu->active_job=list_Job_pop(cpu->unscheduled_jobs);
     cpu->active_job_scheduled_at=cpu->current_clock;
     markJobAsComplete(cpu->active_job,true); 
     
@@ -128,15 +128,15 @@ JobSchedule* roundrobin(VirtualCPU* cpu){
       return NULL;
 
     if(cpu->remaining_active_job!=NULL){
-        addJob(cpu->unscheduled_jobs, cpu->remaining_active_job);
+        list_Job_append(cpu->unscheduled_jobs, cpu->remaining_active_job);
         cpu->remaining_active_job=NULL;
     }
 
-    JobElement* temp=nextJobToSchedule(cpu->unscheduled_jobs);
+    Job* temp=list_Job_pop(cpu->unscheduled_jobs);
 
     if(temp==NULL) return NULL;
 
-    JobElement* remainingquantjob=NULL;
+    Job* remainingquantjob=NULL;
     cpu->active_job=malloc(sizeof(*(cpu->active_job)));
     cpu->active_job_scheduled_at=cpu->current_clock;
 
@@ -164,18 +164,18 @@ JobSchedule* roundrobin(VirtualCPU* cpu){
 }
 
 JobSchedule* shortprocessnext(VirtualCPU* cpu){
-   sortOnRemainingTime(cpu->unscheduled_jobs);
+   //sortOnRemainingTime(cpu->unscheduled_jobs);
    return firstComeFirstServe(cpu);
 }
 
 JobSchedule* shortremainingtime(VirtualCPU* cpu){
-    sortOnRemainingTime(cpu->unscheduled_jobs);
+    //sortOnRemainingTime(cpu->unscheduled_jobs);
     setRoundRobinCPUQuanta(cpu,1);
     JobSchedule* jobsch = roundrobin(cpu);
 
     //put the job back on the queued list, so it can be scheduled straight away if it needs to
     if(cpu->remaining_active_job!=NULL){
-        addJob(cpu->unscheduled_jobs, cpu->remaining_active_job);
+        list_Job_append(cpu->unscheduled_jobs, cpu->remaining_active_job);
         cpu->remaining_active_job=NULL;
     }
 
@@ -188,13 +188,14 @@ JobSchedule* shortremainingtime(VirtualCPU* cpu){
    return jobsch;
 }
 
-void addJobToCPU(VirtualCPU* cpu, JobElement* job){
+void addJobToCPU(VirtualCPU* cpu, Job* job){
 	markJobAsComplete(job,false);  
-	addJob(cpu->unscheduled_jobs,job);
+	list_Job_append(cpu->unscheduled_jobs,job);
+	//list_Job_append(cpu->unscheduled_jobs,job);
 }
 
 bool isCPUIdle(VirtualCPU* cpu){
-     if(empty(cpu->unscheduled_jobs) && cpu->active_job==NULL)
+     if(list_Job_empty(cpu->unscheduled_jobs) && cpu->active_job==NULL)
 	return true;
      return false;
 }

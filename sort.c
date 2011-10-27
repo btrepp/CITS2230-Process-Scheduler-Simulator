@@ -8,7 +8,7 @@
 #include "debug.h"
 #include "jobList.h"
 
-int listLength(JobElement* Job){
+/*int listLength(JobElement* Job){
 	int count=0;
 	while(Job!=NULL){
 		Job=Job->next;
@@ -16,13 +16,13 @@ int listLength(JobElement* Job){
 	}
 	return count;
 }
-
+*/
 
 
 // Takes in the Joblist and sort its from its arrival time
-JobElement* sort(JobElement* Job)
+list_Job* sort(list_Job* list)
 {
-	int jobCounter=listLength(Job);
+	int jobCounter=list_Job_length(list);
 
 	JobElement* firstJob; // container for the first job in the linked list
 	//printOrder(Job);

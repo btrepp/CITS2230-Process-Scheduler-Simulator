@@ -5,7 +5,7 @@
 #define TOKEN_BUFFER_SIZE 10
 #define _GNU_SOURCE
 
-//#define DEBUG
+#define DEBUG
 
 
 #include <stdlib.h>
@@ -20,10 +20,13 @@
 #include "fileToJobList.h"
 
 
-JobElement* FileToJobList(FILE* file){
-  JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));
-  JobElement* currentelement = firstelement;
-  JobElement* endelement = NULL;
+list_Job* FileToJobList(FILE* file){
+  //JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));
+  //JobElement* currentelement = firstelement;
+  //JobElement* endelement = NULL;
+ 
+  list_Job* list = malloc(sizeof(*list));
+
   // Job counter to count how many Jobs
   int jobCounter = 0;
   
@@ -49,44 +52,46 @@ JobElement* FileToJobList(FILE* file){
 	results[i]=strtok(NULL, DELIMITER);
       }
       
-      //if too many values
-      if(i>4){
-	fprintf(stderr,"Too many values for Job, please check data file!\n");
+      //if too many values or too few
+      if(i>4 || i<3){
+	fprintf(stderr,"Too %s values for Job, please check data file!\n",(i>4 ? "Many":"Few"));
 	for(int j=0;j<=i;j++)
 		debug_print("%d:%s\n",j,results[j]);
 	exit(EXIT_FAILURE);
-      }   
+      }
+   
       debug_print("Loading Job:%s into container...\n",results[0]);
      
       //put into container
-      JobElement* thisOne = malloc(sizeof(JobElement));
-      	
-      memset(thisOne,0,sizeof(JobElement));
+      Job* newJob = malloc(sizeof(*newJob));
+      memset(newJob,0,sizeof(*newJob));
       
       char* jobname = malloc(sizeof(char)*strlen(results[0]));
       strcpy(jobname,results[0]);
-      thisOne->jobname= jobname;
-      thisOne->arrival_time= atoi(results[1]);
-      thisOne->length_time= atoi(results[2]);
+      newJob->jobname= jobname;
+      newJob->arrival_time= atoi(results[1]);
+      newJob->length_time= atoi(results[2]);
 	
        if(i==4)
-		thisOne->pages = atoi(results[3]);
+		newJob->pages = atoi(results[3]);
        else
-		thisOne->pages =-1; 
- 
+		newJob->pages =-1; 
+
+      list_Job_append(list,newJob);
+/* 
       //assign container
 	  if(jobCounter == 0){
-		firstelement= thisOne;
-		currentelement = thisOne;
+		firstelement= newJob;
+		currentelement = newJob;
 		currentelement->next = endelement;// soo that the next element is null
 		debug_print("F element: %s current element: %s\n",firstelement->jobname, currentelement->jobname);
 	  }else {
 		  
-		  currentelement->next = thisOne; // adding new element to the list
+		  currentelement->next = newJob; // adding new element to the list
 		  currentelement = currentelement->next; // move to the new element that was added
 		  currentelement->next= endelement; // next element would be null
 		  debug_print("C Element: %s JC:%d\n",currentelement->jobname,jobCounter);
-	  }
+	  }*/
       jobCounter++;
       
   }
@@ -97,9 +102,8 @@ JobElement* FileToJobList(FILE* file){
 
  // free(&line);
   //sort JobElement on arrival time!
-  debug_print_string("Going into sort\n");
-
-  firstelement = sort(firstelement); // passing the list plus the number of jobs
+ // debug_print_string("Going into sort\n");
+ // firstelement = sort(list); // passing the list plus the number of jobs
   //why do we need the number of jobs? 
 
 
@@ -108,6 +112,6 @@ JobElement* FileToJobList(FILE* file){
   // need to figure out how to get to the first element
   //firstelement = currentelement; 
   
-  return firstelement;
+  return list; //firstelement;
 
 }

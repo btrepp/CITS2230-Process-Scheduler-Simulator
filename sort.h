@@ -1,2 +1,2 @@
-JobElement* sort(JobElement* Job);
-JobElement* sortshortest(JobElement* Job);
+list_Job* sort(list_Job* list);
+list_Job* sortshortest(list_Job* list);

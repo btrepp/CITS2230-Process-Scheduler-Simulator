@@ -1,3 +1,3 @@
 #include "jobList.h"
 #include "stdlib.h"
-JobElement* FileToJobList(FILE* file);
+list_Job* FileToJobList(FILE* file);

@@ -66,7 +66,7 @@ bool assignPage(Memory* mem,JobInMemory* job,int index,int clock){
 	return true;
 }
 
-JobInMemory* findJob(list_JobInMemory* jobs, JobElement* job){
+JobInMemory* findJob(list_JobInMemory* jobs, Job* job){
 	list_iterator_JobInMemory* it = malloc(sizeof(*it));
 	list_JobInMemory_iterator_init(it,jobs);
 	//search for existing job in mem->jobs	
@@ -82,7 +82,7 @@ JobInMemory* findJob(list_JobInMemory* jobs, JobElement* job){
 	return curjob;
 }
 
-JobInMemory* createJob(Memory* mem, JobElement* job, int clock){
+JobInMemory* createJob(Memory* mem, Job* job, int clock){
 	JobInMemory* newjobinmemory = malloc(sizeof(*newjobinmemory));
 	memset(newjobinmemory, 0, sizeof(*newjobinmemory));
 	newjobinmemory->jobname = job->jobname;
@@ -92,7 +92,7 @@ JobInMemory* createJob(Memory* mem, JobElement* job, int clock){
 	return newjobinmemory;
 }
 
-JobInMemory* loadJob(Memory* mem, JobElement* job, int clock){
+JobInMemory* loadJob(Memory* mem, Job* job, int clock){
 	if(job->pages==-1){
 		fprintf(stderr,"Memory management enabled without setting pages \n"
 			"Please check the Job file\n"
@@ -143,7 +143,7 @@ JobInMemory* loadJob(Memory* mem, JobElement* job, int clock){
 	return curjob;
 }
 
-void freeJob(Memory* mem, JobElement* job){
+void freeJob(Memory* mem, Job* job){
 	debug_print("Freeing Job:%s from memory\n",job->jobname);
 
 	list_node_JobInMemory* jobmem = mem->jobs->head;	

@@ -3,6 +3,7 @@
 
 //#define PAGELOC(page,list) ((int) ((page)->location_in_memory))
 #include <stdio.h>
+#include <stdbool.h>
 #include "list.h"
 
 typedef struct Page{

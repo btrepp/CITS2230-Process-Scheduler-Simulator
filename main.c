@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 
   
 	Settings* set = setup(argc,argv);
-	JobElement* list=FileToJobList(set->jobinput); // list would be sorted on arrival time
+	list_Job* list=FileToJobList(set->jobinput); // list would be sorted on arrival time
 
 	setSchedulingMode(&cpu0,set->mode);
 	setRoundRobinCPUQuanta(&cpu0,set->rr_quanta);
@@ -43,15 +43,20 @@ int main(int argc, char* argv[]) {
 	int clock=cpu0.current_clock;
 	int totalclocks=0;
 	int startclocks=clock;
-	while(list!=NULL){
-		while(list!=NULL && clock==list->arrival_time){
+
+	list_iterator_Job* it = malloc(sizeof(*it));
+	list_Job_iterator_init(it, list);
+
+	Job* current = list_Job_examine(it);
+	while(current!=NULL){
+		while(current!=NULL && clock==current->arrival_time){
 			if(totalclocks==0)
 				startclocks=clock;
-			totalclocks+=list->length_time;
+			totalclocks+=current->length_time;
 
-			debug_print("%s: %d @ %d \n",list->jobname,list->arrival_time,clock);
-			addJobToCPU(&cpu0,list);		
-			list=list->next;
+			debug_print("%s: %d @ %d \n",current->jobname,current->arrival_time,clock);
+			addJobToCPU(&cpu0,current);		
+			current= list_Job_next(it);
 		}
 		clock=incrementClock(&cpu0);
 		dumpMemory(clock,set,cpu0.physical_memory);
@@ -69,6 +74,7 @@ int main(int argc, char* argv[]) {
 	debug_print_string("Complete!\n");
 
 	list_JobSchedule* results = getResults(&cpu0);
+	printResults(results);
 	printResultsCompressed(results);
 
 	footer(outhtml);

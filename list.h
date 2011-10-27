@@ -1,3 +1,6 @@
+#include <stdbool.h>
+#include <stdio.h>
+
 #define DEFINE_LIST(type) \
   typedef struct list_node_##type { \
     struct list_node_##type *next; \
@@ -21,7 +24,9 @@
   void list_##type##_iterator_init(list_iterator_##type* it, list_##type* container); \
   type* list_##type##_next(list_iterator_##type* it); \
   type* list_##type##_examine(list_iterator_##type* it); \
-  type* list_##type##_remove(list_iterator_##type* it); 
+  type* list_##type##_remove(list_iterator_##type* it); \
+  bool  list_##type##_empty(list_##type* container); \
+  int   list_##type##_length(list_##type* container); 
 
 #define LIST_INSERT_AFTER(type) \
  void list_##type##_insert_after(list_node_##type *node, type *data) { \
@@ -92,8 +97,24 @@
 	type* data = temp->data; \
 	free(temp); \
 	return data; \
-   }
+   }\
+   
 
+#define LIST_STATUS(type) \
+   bool list_##type##_empty(list_##type* container){ \
+	if(container->head==NULL) \
+		return true; \
+	return false; \
+   } \
+   int list_##type##_length(list_##type* container){ \
+	list_node_##type * current= container->head; \
+	int length=0; \
+	while(current!=NULL){ \
+		current=current->next; \
+		length++; \
+	} \
+	return length; \
+   }
 
 
 	
@@ -101,6 +122,6 @@
 	LIST_INSERT_AFTER(type) \
 	LIST_APPEND(type) \
 	LIST_POP(type) \
-	LIST_ITERATOR(type);
-
+	LIST_ITERATOR(type) \
+	LIST_STATUS(type)
 

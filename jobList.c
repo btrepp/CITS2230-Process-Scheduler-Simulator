@@ -7,7 +7,8 @@
 //#define DEBUG
 #include "debug.h"
 
-
+LIST(Job);
+/*
 void addJob(JobListContainer* list, JobElement* job){
   JobElement* copy= malloc(sizeof(*copy));
   memcpy(copy,job,sizeof(*copy));
@@ -80,8 +81,8 @@ void sortOnArrivalTime(JobListContainer* list){
 	list->tail=temp;
     }
 }	
-
-void markJobAsComplete(JobElement* job, bool complete){
+*/
+void markJobAsComplete(Job* job, bool complete){
 	if(job!=NULL)
 		job->completed=complete;	
 }
