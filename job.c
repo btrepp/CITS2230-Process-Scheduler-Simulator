@@ -1,6 +1,6 @@
 #include "stdlib.h"
 #include "jobScheduler.h"
-#include "jobList.h"
+#include "job.h"
 #include "sort.h"
 #include <string.h>
 

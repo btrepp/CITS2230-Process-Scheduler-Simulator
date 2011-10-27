@@ -1,5 +1,4 @@
 #include "jobScheduler.h"
-#include "jobList.h"
 #include "sort.h"
 
 #define DEBUG

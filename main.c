@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 //#include "JobList.c"
-#include "jobList.h"
+#include "job.h"
 #include "jobScheduler.h"
 #include "virtualCPU.h"
 #include "setup.h"

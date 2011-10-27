@@ -2,7 +2,7 @@
 
 
 
-#include "jobList.h"
+#include "job.h"
 #include "page.h"
 
 typedef struct Memory{

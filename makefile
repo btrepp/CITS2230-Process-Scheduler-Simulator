@@ -3,7 +3,7 @@
 
 
 PROJECT=CITS2230CpuSimulator
-SOURCES=main.c fileToJobList.c jobScheduler.c printResults.c setup.c jobList.c \
+SOURCES=main.c fileToJobList.c jobScheduler.c printResults.c setup.c job.c \
 	virtualCPU.c memory.c page.c htmloutput.c \
 	
 LIBRARY=

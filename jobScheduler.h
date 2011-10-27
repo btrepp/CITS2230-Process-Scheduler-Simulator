@@ -1,7 +1,7 @@
 #ifndef JOB_SCHEDULER
 #define JOB_SCHEDULER
 
-#include "jobList.h"
+#include "job.h"
 #include <stdbool.h>
 
 #include "list.h"

@@ -13,7 +13,7 @@
 #include <errno.h>
 #include <stdio.h>
 
-#include "jobList.h"
+#include "job.h"
 #include "sort.h"
 #include "debug.h"
 

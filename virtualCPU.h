@@ -1,7 +1,7 @@
 #ifndef VIRTUAL_CPU
 #define VIRTUAL_CPU
 
-#include "jobList.h"
+#include "job.h"
 #include "jobScheduler.h"
 #include "memory.h"
 
