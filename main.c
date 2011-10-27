@@ -71,6 +71,7 @@ int main(int argc, char* argv[]) {
 	list_JobSchedule* results = getResults(&cpu0);
 	printResultsCompressed(results);
 
+	footer(outhtml);
 	//printf(" [%s] \n", FileToJobList);
 	return 0;
 }
