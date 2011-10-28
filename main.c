@@ -14,8 +14,9 @@
 
 
 
-void dumpMemory(int clock, Settings* set, Memory* mem){
-    memToJavascriptArray(set->htmloutput, mem);  
+void dumpMemory(int clock, Settings* set, VirtualCPU* cpu){
+    Memory* mem = cpu->physical_memory;
+    memToJavascriptArray(set->htmloutput, cpu);  
 
     if(set->mem_management && clock-1==set->mem_quanta){
 	fprintf(set->memoutput,"\nJobs held in physical memory frames at t=%d\n\n",clock-1);
@@ -57,7 +58,7 @@ int main(int argc, char* argv[]) {
 			current= list_Job_next(it);
 		}
 		clock=incrementClock(&cpu0);
-		dumpMemory(clock,set,cpu0.physical_memory);
+		dumpMemory(clock,set,&cpu0);
 
 // 		debug_print("%s \n",list->jobname);
 // 		list=list->next;
@@ -67,7 +68,7 @@ int main(int argc, char* argv[]) {
 	while(isCPUIdle(&cpu0)==false /*&& clock<startclocks+2*totalclocks*/){
 		debug_print("Incrementing clock %d\n",clock);
 		clock=incrementClock(&cpu0);
-		dumpMemory(clock,set,cpu0.physical_memory);
+		dumpMemory(clock,set,&cpu0);
 	}
 	debug_print_string("Complete!\n");
 

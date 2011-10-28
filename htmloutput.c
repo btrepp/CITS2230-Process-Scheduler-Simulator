@@ -25,6 +25,7 @@ void scriptJSHeader(FILE* out){
 		"   }\n"
 		"}\n");
 	fprintf(out,"var all = [];\n");
+	fprintf(out,"var process= [];\n");
 	fprintf(out,"var clock =0;\n");
 	
 }
@@ -36,23 +37,29 @@ void scriptJSFooter(FILE* out){
 	fprintf(out, "$('#increment').click(function (e) { \n"
        		     "      e.preventDefault(); \n"
         	     "      clock++; \n"
-    		     "      printClock(); \n"
+    		     "      if(clock > all.length -1){ clock = all.length-1}; \n"
+		     "      printClock(); \n"
 		     "}); \n");
 	fprintf(out, "$('#decrement').click(function (e) { \n"
        		     "      e.preventDefault(); \n"
         	     "      clock--; \n"
+    		     "      if(clock < 0){ clock = 0}; \n"
     		     "      printClock(); \n"
 		     "}); \n");
 
 	fprintf(out, "function printClock(){\n"
 		"   $('#content').empty();\n "
 		"   $('#clockcount').html(clock); \n"
+		"   $('#jobname').html(process[clock]);\n"
 		"   jQuery.each(all[clock], function(i, val) {\n"
 		"         $('#content').append(\"<div>\");\n"
 		"         $('#content').append(\"<div class=\"+val.jobname+\">\" +val.jobname+\"</div>\");\n"
 		"         $('#content').append(\"</div>\");\n"
 		"   });\n"
 		"}\n");
+
+
+	fprintf(out, " printClock(); \n");
 	fprintf(out, "</script> \n ");
 	
 }
@@ -63,19 +70,27 @@ void footer(FILE* out){
 	fprintf(out, "</script>\n");
 	fprintf(out, "<body>\n");
 	fprintf(out, "<div>\n");
-	fprintf(out, "<div id=\"clockcount\"></div>\n");
 	fprintf(out, "<input type=\"button\" value=\"Previous\" id=\"decrement\"/>\n");	
 	fprintf(out, "<input type=\"button\" value=\"Next\" id=\"increment\"/>\n");
+	fprintf(out, "<div>Clock</div><div id=\"clockcount\"></div>\n");
+	fprintf(out, "<div>Process</div><div id=\"jobname\"></div>\n");
 	fprintf(out, "</div>\n");
 	fprintf(out, "<div id=\"content\"></div>\n");
 	scriptJSFooter(out);
 	fprintf(out,"</body></html>\n");
 }
 
-void memToJavascriptArray(FILE* out, Memory* mem){
+void memToJavascriptArray(FILE* out, VirtualCPU* cpu){
+	Memory* mem = cpu->physical_memory;
 	//return;
 	if(out==NULL) return ;
 	fprintf(out,"var memspace = [];\n");
+	
+	if(cpu->active_job!=NULL)
+		fprintf(out,"process.push(\"%s\");\n",cpu->active_job->job->jobname);
+	else 
+		fprintf(out,"process.push(\"idle\");");
+
 	for(int i=0;i<mem->number_of_pages; i++){
 		if(mem->pages[i]->job!=NULL)
 			fprintf(out, "memspace.push(memElement(\"%s\"));\n", mem->pages[i]->job->jobname);
