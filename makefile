@@ -4,7 +4,7 @@
 
 PROJECT=CITS2230CpuSimulator
 SOURCES=main.c fileToJobList.c jobScheduler.c printResults.c setup.c job.c \
-	virtualCPU.c memory.c page.c htmloutput.c \
+	virtualCPU.c memory.c page.c htmloutput.c sort.c \
 	
 LIBRARY=
 INCPATHS=

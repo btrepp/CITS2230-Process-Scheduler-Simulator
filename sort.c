@@ -6,7 +6,8 @@
 
 //#define DEBUG
 #include "debug.h"
-#include "jobList.h"
+#include "job.h"
+#include "list.h"
 
 /*int listLength(JobElement* Job){
 	int count=0;
@@ -26,55 +27,48 @@ list_Job* sort(list_Job* list)
   list_node_Job firstJob; // container for firstJob
   list_node_Job startList;
   int jobCounter = list_Job_length(list); 
-  list_iterator_Job* preit; // a iterator to previous
+
   list_iterator_Job* it; //the iterator
-  list_iterator_Job* futit; // future iterator so i can check the next job for null
+
   list_Job_iterator_init( it, list); // initiate iterator class
-  list_Job_iterator_init(futit, list); 
-  list_Job_iterator_init(preit,list);
-  list_Job_next(futit); // put future iterator in front of current iterator;
-  // iterator starts at the begining of the list
+
   firstJob  = list_Job_examine(it);
   startList = list_Job_examine(it);
   int i = 0;
   while(i<jobCounter)
   {
     list_Job_iterator_init(it, list); // soo the iterator starts at the begining of the list again
-    list_Job_iterator_init(futit, list); 
-    list_Job_iterator_init(preit, list);// needs to be before the start of the list
-    list_Job_next(futit); // put future iterator in front of current iterator;
+
     for(int j = 0; j < jobCounter - 1; j++) 
     {
-      if(list_Job_examine(futit) != NULL) // look into current data and see next pointer
+      if(list_Job_examine(it)->next != NULL) // look into current data and see next pointer
       {
-	if(list_Job_examine(it)->arrival_time > list_Job_examine(futit)->arrival_time)
+	if(list_Job_examine(it)->arrival_time > list_Job_examine(it)->next->arrival_time)
 	{
 	  temp->data = list_Job_examine(it);
 	  list_Job_next(it); // move iterator to next
-	  list_Job_next(futit);
-	  temp->next = list_Job_examine(futit);
-	  list_Job_examine(futit) = temp->data;
-	  list_Job_examine(preit)->next = list_Job_examine(it);
+	  temp->next = list_Job_examine(it)->next;
+	  list_Job_examine(it)->next = temp->data;
+	  list_Job_examine(it)->prev = list_Job_examine(it);
 	  list_Job_next(it);
-	  list_Job_next(futit);
-	  list_Job_examine(futit) = temp->next;
-	  list_Job_next(preit);
+	  list_Job_examine(it)->next = temp->next;
 	  
-	  if(list_Job_examine(it)->arrival_time < firstJob->arrival_time)
+	  
+	  if(list_Job_examine(it)->arrival_time < firstJob->data->arrival_time)
 	  {
 	    firstJob = list_Job_examine(it); // Now first Job is set
-	    if(startList->next == firstJob)
+	    if(startList->next == firstJob) // When startList is next to firstJob 
 	    {
 	      startList->next = firstJob->next;
 	      firstJob->next = startList;
 	      startList = firstJob;
 	    }
 	  }
-	  if(list_Job_examine(preit)->next == startList) startList = list_Job_examine(preit);
-	  if(list_Job_examine(preit)->arrival_time < firstJob->arrival_time) firstJob = list_Job_examine(preit);
+	  //if(list_Job_examine(it)->prev->next == startList) startList = list_Job_examine(it)->prev;
+	  if(list_Job_examine(it)->prev->arrival_time < firstJob->data->arrival_time) firstJob = list_Job_examine(it)->prev;
 	  
 	} else {
-	  if(list_Job_examine(it)->arrival_time < firstJob->arrival_time)
+	  if(list_Job_examine(it)->arrival_time < firstJob->data->arrival_time)
 	  {
 	    firstJob = list_Job_examine(it); // Now first Job is set
 	    if(startList->next == firstJob)
@@ -84,10 +78,8 @@ list_Job* sort(list_Job* list)
 	      startList = firstJob;
 	    }
 	  }
-	  if(list_Job_examine(it) != list_Job_examine(preit)) list_Job_next(preit);
+	  //if(list_Job_examine(it) != list_Job_examine(it)->prev) list_Job_next(preit);
 	  list_Job_next(it);
-	  list_Job_next(futit);
-	     
 	}
       }
     }
@@ -95,9 +87,10 @@ list_Job* sort(list_Job* list)
   }
   debug_print_string("Finished sorting \n");
   debug_print("First Job is... %s \n", firstJob->jobname);
-  return firstJob;
+  return list;
 }
 
+/*
 // Takes in the Joblist and sort its from its arrival time
 JobElement* sort(JobElement* Job)
 {
@@ -195,7 +188,8 @@ JobElement* sort(JobElement* Job)
 	
 	return firstJob;
 }
-
+*/
+/*
 // Sort for sorting length_time
 // Takes in the Joblist and sort its from its length_time
 JobElement* sortshortest(JobElement* Job)
@@ -293,6 +287,7 @@ JobElement* sortshortest(JobElement* Job)
 	
 	return firstJob;
 }
+*/
 /*
 void printOrder(JobElement* start){
 	JobElement* current =start;

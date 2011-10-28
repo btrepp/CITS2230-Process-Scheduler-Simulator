@@ -103,7 +103,8 @@ list_Job* FileToJobList(FILE* file){
  // free(&line);
   //sort JobElement on arrival time!
  // debug_print_string("Going into sort\n");
- // firstelement = sort(list); // passing the list plus the number of jobs
+  //list = sort(list); // passing the list plus the number of jobs
+  sort(list);
   //why do we need the number of jobs? 
 
 
