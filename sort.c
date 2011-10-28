@@ -19,11 +19,89 @@
 */
 
 
-// Takes in the Joblist and sort its from its arrival time
-list_Job* sort(list_Job* list)
+list_Job* sort(list_Job* list) 
 {
-	int jobCounter=list_Job_length(list);
+ // int sortbyType(list,type);
+  list_node_Job temp; // temp container
+  list_node_Job firstJob; // container for firstJob
+  list_node_Job startList;
+  int jobCounter = list_Job_length(list); 
+  list_iterator_Job* preit; // a iterator to previous
+  list_iterator_Job* it; //the iterator
+  list_iterator_Job* futit; // future iterator so i can check the next job for null
+  list_Job_iterator_init( it, list); // initiate iterator class
+  list_Job_iterator_init(futit, list); 
+  list_Job_iterator_init(preit,list);
+  list_Job_next(futit); // put future iterator in front of current iterator;
+  // iterator starts at the begining of the list
+  firstJob  = list_Job_examine(it);
+  startList = list_Job_examine(it);
+  int i = 0;
+  while(i<jobCounter)
+  {
+    list_Job_iterator_init(it, list); // soo the iterator starts at the begining of the list again
+    list_Job_iterator_init(futit, list); 
+    list_Job_iterator_init(preit, list);// needs to be before the start of the list
+    list_Job_next(futit); // put future iterator in front of current iterator;
+    for(int j = 0; j < jobCounter - 1; j++) 
+    {
+      if(list_Job_examine(futit) != NULL) // look into current data and see next pointer
+      {
+	if(list_Job_examine(it)->arrival_time > list_Job_examine(futit)->arrival_time)
+	{
+	  temp->data = list_Job_examine(it);
+	  list_Job_next(it); // move iterator to next
+	  list_Job_next(futit);
+	  temp->next = list_Job_examine(futit);
+	  list_Job_examine(futit) = temp->data;
+	  list_Job_examine(preit)->next = list_Job_examine(it);
+	  list_Job_next(it);
+	  list_Job_next(futit);
+	  list_Job_examine(futit) = temp->next;
+	  list_Job_next(preit);
+	  
+	  if(list_Job_examine(it)->arrival_time < firstJob->arrival_time)
+	  {
+	    firstJob = list_Job_examine(it); // Now first Job is set
+	    if(startList->next == firstJob)
+	    {
+	      startList->next = firstJob->next;
+	      firstJob->next = startList;
+	      startList = firstJob;
+	    }
+	  }
+	  if(list_Job_examine(preit)->next == startList) startList = list_Job_examine(preit);
+	  if(list_Job_examine(preit)->arrival_time < firstJob->arrival_time) firstJob = list_Job_examine(preit);
+	  
+	} else {
+	  if(list_Job_examine(it)->arrival_time < firstJob->arrival_time)
+	  {
+	    firstJob = list_Job_examine(it); // Now first Job is set
+	    if(startList->next == firstJob)
+	    {
+	      startList->next = firstJob->next;
+	      firstJob->next = startList;
+	      startList = firstJob;
+	    }
+	  }
+	  if(list_Job_examine(it) != list_Job_examine(preit)) list_Job_next(preit);
+	  list_Job_next(it);
+	  list_Job_next(futit);
+	     
+	}
+      }
+    }
+    i++;
+  }
+  debug_print_string("Finished sorting \n");
+  debug_print("First Job is... %s \n", firstJob->jobname);
+  return firstJob;
+}
 
+// Takes in the Joblist and sort its from its arrival time
+JobElement* sort(JobElement* Job)
+{
+    int jobCounter=listLength(Job);
 	JobElement* firstJob; // container for the first job in the linked list
 	//printOrder(Job);
 	JobElement* temp1; // temp container
@@ -32,7 +110,7 @@ list_Job* sort(list_Job* list)
 	//window = Job;
 	JobElement* startList; // marker to mark the start of the list, note should always be in at the start of the list!
 			      // So that we can return to the list and sort it from the start again
-	if( Job->next->next->next->next ==  NULL) debug_print_string("Job5 is null\n");
+	//if( Job->next->next->next->next ==  NULL) debug_print_string("Job5 is null\n");
 	firstJob = Job;
 	previous = Job;
 	startList = Job;
@@ -55,21 +133,20 @@ list_Job* sort(list_Job* list)
 	{
 	  //debug_print("i = %d \n", i);
 	  Job = startList; // Soo that the search can start in the front again
-	  previous = before; // This gives the problem..ideally it should be some pointer to
-				// the startList ie previous->next = startList;
+	  previous = before; 
 		for(j = 0; j < jobCounter-1; j++)
 		{
 		  if(Job->next != NULL )
 		  {
 			if( Job->arrival_time > Job->next->arrival_time) // current job is older than the next job, must swap
 			{ 
-			  // This partially working rite until the  2nd loop finishes
 				temp1 = Job;
 				Job = Job->next;
 				temp1->next = Job->next;
 				Job->next = temp1;
 				previous->next = Job;
 				Job = Job->next;
+				
 				Job->next = temp1->next;
 				previous = previous->next;
 				// neeed to compare the currentjob with first job to see which is the newest jobCounter
