@@ -28,12 +28,14 @@ list_Job* sort(list_Job* list)
   list_node_Job startList;
   int jobCounter = list_Job_length(list); 
 
-  list_iterator_Job* it; //the iterator
+  list_iterator_Job* it = NULL; //the iterator
 
-  list_Job_iterator_init( it, list); // initiate iterator class
+  list_Job_iterator_init(it, list); // initiate iterator class
 
-  firstJob  = list_Job_examine(it);
-  startList = list_Job_examine(it);
+  firstJob.data  = list_Job_examine(it);
+  firstJob.next = it->current->next;
+  startList.data = list_Job_examine(it);
+  startList.next = it->current->next;
   int i = 0;
   while(i<jobCounter)
   {
@@ -41,40 +43,40 @@ list_Job* sort(list_Job* list)
 
     for(int j = 0; j < jobCounter - 1; j++) 
     {
-      if(list_Job_examine(it)->next != NULL) // look into current data and see next pointer
+      if( it->current->next != NULL) // look into current data and see next pointer
       {
-	if(list_Job_examine(it)->arrival_time > list_Job_examine(it)->next->arrival_time)
+	if(list_Job_examine(it)->arrival_time >  it->current->next->data->arrival_time)
 	{
-	  temp->data = list_Job_examine(it);
+	  temp.data = list_Job_examine(it);
 	  list_Job_next(it); // move iterator to next
-	  temp->next = list_Job_examine(it)->next;
-	  list_Job_examine(it)->next = temp->data;
-	  list_Job_examine(it)->prev = list_Job_examine(it);
+	  temp.next =  it->current->next;
+	  it->current->next->data = temp.data;
+	  it->prev->data = list_Job_examine(it);
 	  list_Job_next(it);
-	  list_Job_examine(it)->next = temp->next;
+	  it->current->next = temp.next;
 	  
 	  
-	  if(list_Job_examine(it)->arrival_time < firstJob->data->arrival_time)
+	  if(list_Job_examine(it)->arrival_time < firstJob.data->arrival_time)
 	  {
-	    firstJob = list_Job_examine(it); // Now first Job is set
-	    if(startList->next == firstJob) // When startList is next to firstJob 
+	    firstJob.data = list_Job_examine(it); // Now first Job is set
+	    if(startList.next->data == firstJob.data) // When startList is next to firstJob 
 	    {
-	      startList->next = firstJob->next;
-	      firstJob->next = startList;
+	      startList.next = firstJob.next;
+	      firstJob.next->data = startList.data;
 	      startList = firstJob;
 	    }
 	  }
 	  //if(list_Job_examine(it)->prev->next == startList) startList = list_Job_examine(it)->prev;
-	  if(list_Job_examine(it)->prev->arrival_time < firstJob->data->arrival_time) firstJob = list_Job_examine(it)->prev;
+	  if(it->prev->data->arrival_time < firstJob.data->arrival_time) firstJob.data = it->prev->data;
 	  
 	} else {
-	  if(list_Job_examine(it)->arrival_time < firstJob->data->arrival_time)
+	  if(list_Job_examine(it)->arrival_time < firstJob.data->arrival_time)
 	  {
-	    firstJob = list_Job_examine(it); // Now first Job is set
-	    if(startList->next == firstJob)
+	    firstJob.data = list_Job_examine(it); // Now first Job is set
+	    if(startList.next->data == firstJob.data)
 	    {
-	      startList->next = firstJob->next;
-	      firstJob->next = startList;
+	      startList.next = firstJob.next;
+	      firstJob.next->data = startList.data;
 	      startList = firstJob;
 	    }
 	  }
@@ -86,7 +88,7 @@ list_Job* sort(list_Job* list)
     i++;
   }
   debug_print_string("Finished sorting \n");
-  debug_print("First Job is... %s \n", firstJob->jobname);
+  debug_print("First Job is... %s \n", firstJob.data->jobname);
   return list;
 }
 
