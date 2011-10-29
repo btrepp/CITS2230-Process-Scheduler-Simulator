@@ -30,7 +30,7 @@ list_Job* sort(list_Job* list)
 
   list_iterator_Job* it = NULL; //the iterator
 
-  list_Job_iterator_init(it, list); // initiate iterator class
+  list_Job_iterator_init(it, list); // initiate iterator class, with iterator at the start of the list
 
   firstJob.data  = list_Job_examine(it);
   firstJob.next = it->current->next;
@@ -50,10 +50,11 @@ list_Job* sort(list_Job* list)
 	  temp.data = list_Job_examine(it);
 	  list_Job_next(it); // move iterator to next
 	  temp.next =  it->current->next;
-	  it->current->next->data = temp.data;
+	  it->current->next = temp; //next link is now pointing to the temp container
 	  it->prev->data = list_Job_examine(it);
-	  list_Job_next(it);
-	  it->current->next = temp.next;
+	  //list_Job_next(it);
+	  list_Job_remove(it);
+	  it->current->next = temp.next; //might not need this line 
 	  
 	  
 	  if(list_Job_examine(it)->arrival_time < firstJob.data->arrival_time)
@@ -62,7 +63,7 @@ list_Job* sort(list_Job* list)
 	    if(startList.next->data == firstJob.data) // When startList is next to firstJob 
 	    {
 	      startList.next = firstJob.next;
-	      firstJob.next->data = startList.data;
+	      firstJob.next = startList;
 	      startList = firstJob;
 	    }
 	  }
@@ -76,7 +77,7 @@ list_Job* sort(list_Job* list)
 	    if(startList.next->data == firstJob.data)
 	    {
 	      startList.next = firstJob.next;
-	      firstJob.next->data = startList.data;
+	      firstJob.next = startList;
 	      startList = firstJob;
 	    }
 	  }
