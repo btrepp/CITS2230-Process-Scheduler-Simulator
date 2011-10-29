@@ -1,13 +1,47 @@
 #include "stdlib.h"
-#include "jobScheduler.h"
 #include "job.h"
-#include "sort.h"
-#include <string.h>
 
 //#define DEBUG
 #include "debug.h"
 
 LIST(Job);
+
+
+int compare_Job_Arrival(const void * job1, const void* job2){
+	return (((*((Job**)job1))->arrival_time)-((*((Job**)job2))->arrival_time));
+}
+
+int compare_Job_Remaining(const void *job1, const void* job2){
+	return (((*((Job**)job1))->length_time)-((*((Job**)job2))->length_time));
+}
+
+void qsort_Job(list_Job* container, int ( * comparator ) ( const void *, const void * )){
+        //pop everything off into array
+        int length = list_Job_length(container);
+        
+        Job** data = malloc(sizeof(*data)*length);
+        Job* current = NULL;
+        {
+		int i=0;
+    		while((current=list_Job_pop(container))!=NULL){
+        	         data[i++] = current;
+        	}
+        }
+        
+       //qsort array
+       qsort (data, length, sizeof(*data), comparator);
+       //push back on list
+       
+       for(int i=0;i<length;i++)
+           list_Job_append(container, data[i]);
+
+	free(data);
+}
+
+
+
+
+
 /*
 void addJob(JobListContainer* list, JobElement* job){
   JobElement* copy= malloc(sizeof(*copy));

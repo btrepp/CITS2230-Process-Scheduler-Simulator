@@ -21,9 +21,6 @@
 
 
 list_Job* FileToJobList(FILE* file){
-  //JobElement* firstelement=NULL;// = malloc(sizeof(JobElement));
-  //JobElement* currentelement = firstelement;
-  //JobElement* endelement = NULL;
  
   list_Job* list = malloc(sizeof(*list));
 
@@ -78,41 +75,10 @@ list_Job* FileToJobList(FILE* file){
 		newJob->pages =-1; 
 
       list_Job_append(list,newJob);
-/* 
-      //assign container
-	  if(jobCounter == 0){
-		firstelement= newJob;
-		currentelement = newJob;
-		currentelement->next = endelement;// soo that the next element is null
-		debug_print("F element: %s current element: %s\n",firstelement->jobname, currentelement->jobname);
-	  }else {
-		  
-		  currentelement->next = newJob; // adding new element to the list
-		  currentelement = currentelement->next; // move to the new element that was added
-		  currentelement->next= endelement; // next element would be null
-		  debug_print("C Element: %s JC:%d\n",currentelement->jobname,jobCounter);
-	  }*/
       jobCounter++;
       
   }
-//   if(read==-1){
-//     perror(NULL);
-//     exit(EXIT_FAILURE);
-//  } 
 
- // free(&line);
-  //sort JobElement on arrival time!
- // debug_print_string("Going into sort\n");
-  //list = sort(list); // passing the list plus the number of jobs
-  sort(list);
-  //why do we need the number of jobs? 
-
-
-  // sorts the jobList in terms of its arrival_time
-  
-  // need to figure out how to get to the first element
-  //firstelement = currentelement; 
-  
   return list; //firstelement;
 
 }

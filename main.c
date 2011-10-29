@@ -34,6 +34,7 @@ int main(int argc, char* argv[]) {
 	Settings* set = setup(argc,argv);
 	header(set->htmloutput);
 	list_Job* list=FileToJobList(set->jobinput); // list would be sorted on arrival time
+	qsort_Job(list, compare_Job_Arrival);
 
 	setSchedulingMode(&cpu0,set->mode);
 	setRoundRobinCPUQuanta(&cpu0,set->rr_quanta);
@@ -49,6 +50,13 @@ int main(int argc, char* argv[]) {
 	Job* current = list_Job_examine(it);
 	while(current!=NULL){
 		while(current!=NULL && clock==current->arrival_time){
+			if(current->arrival_time < clock){
+				//big problem
+				fprintf(stderr,"Process to be scheduled in the past- ERROR\n");
+				exit(EXIT_FAILURE);
+			}
+
+
 			if(totalclocks==0)
 				startclocks=clock;
 			totalclocks+=current->length_time;

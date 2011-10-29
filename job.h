@@ -13,6 +13,9 @@ typedef struct Job{
 } Job;
 
 LIST_PROTOTYPE(Job);
+void qsort_Job(list_Job* container, int ( * comparator ) ( const void *, const void * ));
+int compare_Job_Arrival(const void * job1, const void* job2);
+int compare_Job_Remaining(const void * job1, const void* job2);
 
-void markJobAsComplete(Job* job, bool complete);
+//void markJobAsComplete(Job* job, bool complete);
 #endif
