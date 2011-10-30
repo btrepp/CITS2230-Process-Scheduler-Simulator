@@ -171,6 +171,7 @@ JobScheduleResult* roundrobin(VirtualCPU* cpu){
 
 JobScheduleResult* shortprocessnext(VirtualCPU* cpu){
    //sortOnRemainingTime(cpu->unscheduled_jobs);
+   //qsort_Job(cpu->unscheduled_jobs,compare_Job_Remaining);
    return firstComeFirstServe(cpu);
 }
 

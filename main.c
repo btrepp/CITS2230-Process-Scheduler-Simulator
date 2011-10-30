@@ -34,7 +34,7 @@ int main(int argc, char* argv[]) {
 	Settings* set = setup(argc,argv);
 	header(set->htmloutput);
 	list_Job* list=FileToJobList(set->jobinput); // list would be sorted on arrival time
-	qsort_Job(list, compare_Job_Arrival);
+	list_Job_sort(list, compare_Job_Arrival);
 
 	setSchedulingMode(&cpu0,set->mode);
 	setRoundRobinCPUQuanta(&cpu0,set->rr_quanta);

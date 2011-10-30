@@ -26,7 +26,8 @@
   type* list_##type##_examine(list_iterator_##type* it); \
   type* list_##type##_remove(list_iterator_##type* it); \
   bool  list_##type##_empty(list_##type* container); \
-  int   list_##type##_length(list_##type* container); 
+  int   list_##type##_length(list_##type* container); \
+  void  list_##type##_sort(list_##type* container, int ( * comparator ) ( const type *, const type * ));
 
 #define LIST_INSERT_AFTER(type) \
  void list_##type##_insert_after(list_node_##type *node, type *data) { \
@@ -116,12 +117,33 @@
 	return length; \
    }
 
-
+#define LIST_SORT(type) \
+void list_##type##_sort(list_##type* container, int ( * comparator ) ( const type *, const type * )){ \
+        int length = list_##type##_length(container); \
+	\
+        type** data = malloc(sizeof(*data)*length); \
+        type* current = NULL; \
+        { \
+                int i=0; \
+                while((current=list_##type##_pop(container))!=NULL){ \
+                         data[i++] = current; \
+                } \
+        } \
+	\
+       typedef int (*compfn)(const void*, const void*); \
+       qsort (data, length, sizeof(*data), (compfn)(comparator)); \
+	\
+       for(int i=0;i<length;i++) \
+           list_##type##_append(container, data[i]); \
+	\
+        free(data); \
+}
 	
 #define LIST(type) \
 	LIST_INSERT_AFTER(type) \
 	LIST_APPEND(type) \
 	LIST_POP(type) \
 	LIST_ITERATOR(type) \
-	LIST_STATUS(type)
+	LIST_STATUS(type) \
+	LIST_SORT(type)
 

@@ -7,15 +7,15 @@
 LIST(Job);
 
 
-int compare_Job_Arrival(const void * job1, const void* job2){
+int compare_Job_Arrival(const Job * job1, const Job* job2){
 	return (((*((Job**)job1))->arrival_time)-((*((Job**)job2))->arrival_time));
 }
 
-int compare_Job_Remaining(const void *job1, const void* job2){
+int compare_Job_Remaining(const Job *job1, const Job* job2){
 	return (((*((Job**)job1))->length_time)-((*((Job**)job2))->length_time));
 }
-
-void qsort_Job(list_Job* container, int ( * comparator ) ( const void *, const void * )){
+/*
+void qsort_Job(list_Job* container, int ( * comparator ) ( const Job *, const Job * )){
         //pop everything off into array
         int length = list_Job_length(container);
         
@@ -29,7 +29,8 @@ void qsort_Job(list_Job* container, int ( * comparator ) ( const void *, const v
         }
         
        //qsort array
-       qsort (data, length, sizeof(*data), comparator);
+       typedef int (*compfn)(const void*, const void*);
+       qsort (data, length, sizeof(*data), (compfn)(comparator));
        //push back on list
        
        for(int i=0;i<length;i++)
@@ -37,7 +38,7 @@ void qsort_Job(list_Job* container, int ( * comparator ) ( const void *, const v
 
 	free(data);
 }
-
+*/
 
 
 
