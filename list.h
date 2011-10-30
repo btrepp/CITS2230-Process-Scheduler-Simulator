@@ -27,7 +27,7 @@
   type* list_##type##_remove(list_iterator_##type* it); \
   bool  list_##type##_empty(list_##type* container); \
   int   list_##type##_length(list_##type* container); \
-  void  list_##type##_sort(list_##type* container, int ( * comparator ) ( const type *, const type * ));
+  void  list_##type##_sort(list_##type* container, int ( * comparator ) ( const type **, const type ** ));
 
 #define LIST_INSERT_AFTER(type) \
  void list_##type##_insert_after(list_node_##type *node, type *data) { \
@@ -118,7 +118,7 @@
    }
 
 #define LIST_SORT(type) \
-void list_##type##_sort(list_##type* container, int ( * comparator ) ( const type *, const type * )){ \
+void list_##type##_sort(list_##type* container, int ( * comparator ) ( const type **, const type ** )){ \
         int length = list_##type##_length(container); \
 	\
         type** data = malloc(sizeof(*data)*length); \

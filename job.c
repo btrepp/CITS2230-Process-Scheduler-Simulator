@@ -7,12 +7,13 @@
 LIST(Job);
 
 
-int compare_Job_Arrival(const Job * job1, const Job* job2){
-	return (((*((Job**)job1))->arrival_time)-((*((Job**)job2))->arrival_time));
+int compare_Job_Arrival(const Job** job1, const Job** job2){
+	//return (((*((Job**)job1))->arrival_time)-((*((Job**)job2))->arrival_time));
+	return ((*job1)->arrival_time)-((*job2)->arrival_time);
 }
 
-int compare_Job_Remaining(const Job *job1, const Job* job2){
-	return (((*((Job**)job1))->length_time)-((*((Job**)job2))->length_time));
+int compare_Job_Remaining(const Job **job1, const Job** job2){
+	return ((*job1)->length_time)-((*job2)->length_time);
 }
 /*
 void qsort_Job(list_Job* container, int ( * comparator ) ( const Job *, const Job * )){

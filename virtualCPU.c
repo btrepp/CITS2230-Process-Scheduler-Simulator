@@ -38,7 +38,7 @@ void unloadProcessor(VirtualCPU* cpu){
    	debug_print("Scheduled %s completed @ %d\n",cpu->active_job->job->jobname, 
 						    cpu->current_clock);
 
-	if(cpu->remaining_active_job->time_remaining==0){
+	if(cpu->remaining_active_job!=NULL && cpu->remaining_active_job->time_remaining==0){
 		debug_print("Job %s completed\n",cpu->active_job->job->jobname);
 		free(cpu->remaining_active_job);	
 		cpu->remaining_active_job=NULL;
@@ -49,7 +49,6 @@ void unloadProcessor(VirtualCPU* cpu){
 		}
 	}
 	cpu->active_job=NULL;
-
    }
 }
 
@@ -169,30 +168,38 @@ JobScheduleResult* roundrobin(VirtualCPU* cpu){
     return jobsch; 
 }
 
+int compare_UnprocessedJob_TimeRemaining(const UnprocessedJob **job1, const UnprocessedJob** job2){
+	return ((*job1)->time_remaining)-((*job2)->time_remaining);
+}
+
 JobScheduleResult* shortprocessnext(VirtualCPU* cpu){
-   //sortOnRemainingTime(cpu->unscheduled_jobs);
-   //qsort_Job(cpu->unscheduled_jobs,compare_Job_Remaining);
+    if(cpu->active_job!=NULL)
+      return NULL;
+   list_UnprocessedJob_sort(cpu->unscheduled_jobs, compare_UnprocessedJob_TimeRemaining);
    return firstComeFirstServe(cpu);
 }
 
 JobScheduleResult* shortremainingtime(VirtualCPU* cpu){
-    //sortOnRemainingTime(cpu->unscheduled_jobs);
+    if(cpu->active_job!=NULL)
+      return NULL;
+   list_UnprocessedJob_sort(cpu->unscheduled_jobs, compare_UnprocessedJob_TimeRemaining);
     setRoundRobinCPUQuanta(cpu,1);
     JobScheduleResult* jobsch = roundrobin(cpu);
 
     //put the job back on the queued list, so it can be scheduled straight away if it needs to
-    if(cpu->remaining_active_job!=NULL){
+    if(cpu->remaining_active_job!=NULL && cpu->remaining_active_job->time_remaining >0){
         list_UnprocessedJob_append(cpu->unscheduled_jobs, cpu->remaining_active_job);
         cpu->remaining_active_job=NULL;
     }
-
+ 
     //if the previous recorded job is this job just increment that value
     if(jobsch!=NULL && cpu->scheduled->tail!=NULL && 
 	jobsch->job == cpu->scheduled->tail->data->job){
 	cpu->scheduled->tail->data->running_time+= jobsch->running_time;
 	free(jobsch);
+	cpu->active_job=cpu->scheduled->tail->data;
 	return NULL;
-    }	
+    }
    return jobsch;
 }
 
