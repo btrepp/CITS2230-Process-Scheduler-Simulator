@@ -1,1 +1,42 @@
+ReadME
 
+1.	Running Scheduler
+
+	Usage: [Flag] [Scheduler] [Quantum] [Input File] [Memory Quantum] [-f] [Memoryoutputfile] [-h] 		 
+	       [Htmloutputfile]
+
+	Flag :		-s 	Run Scheduler without memory management(default).
+			-v	Run Scheduler with memory management.
+
+	Scheduler :	FCFS	First Come First Serve algorithm
+			SPN	Shortest Process Next algorithm
+			SRT	Shortest Remaining Time algoritm
+			RR	Round Robin algorithm
+
+	Quantum :		Set time quantum for use in round robin scheduler process
+
+	Input File : 		File where jobs are to be loaded from
+
+	Memory Quantum :	Print memory usuage at quantum time selected (only if -v is set)
+
+	[-f] :			File to print memory usage to, defaults to vout.file
+
+	Memoryoutputfile :	File that print memory usuage prints into
+
+	[-h] :			Flag for HTML memory visualisation
+
+	Htmloutputfile :	File that Html memory visualisation prints into
+
+
+2.	Job input file
+
+	Format:	Job[Number] [Arrivaltime] [Processtime] [Pages]
+	
+	Number :	Index number that is assigned to the job
+
+	Arrivaltime :	Time quanta that the job is to arrive into the CPU
+
+	Processtime :	Time quanta that the job requires the CPU to process for
+
+	Pages :		Number of pages in memory the job requires before it can be processed
+	
