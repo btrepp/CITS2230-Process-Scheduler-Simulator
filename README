@@ -54,8 +54,8 @@ Structure
 
 -Virtual CPU
 
-This simulator works by implementing a "virtual" cpu. This cpu can have jobs passed onto it, and will schedule the
-next job based on the arguments supplied. 
+The simulator works by implementing a "virtual" cpu. The cpu is passed Job processes, and will schedule the
+next Job process based on the arguments supplied. The CPU gets the Job processes from the "virtual" memory if the virtual memory mode has been set, and continously processes the Jobs in the memory until all Job processes are completed. The memory part of the project simply keeps up with updating the Job processes in the "virtual" memory, clearing spaces in the memory when the memory is full when there are additional Jobs that still need to be processed by the CPU.   
 
 
 -Memory Object:
@@ -67,21 +67,25 @@ The LRU(Least Recently Used) is a function to check for the least recently used 
 The "Virtual" memory structure contains the key information needed to store the individual pages required by the job processes as well as keeping track of the least recently used pages, the free pages in memory when processes are completed and no longer needs the memory space, and the list of Jobs that are being sent to the CPU to be processed.
 
 
+Sort
+The Job processes are sorted via the standard qsort function provided in C. The Job process list is sorted based on their arrival time to the CPU. 
 
 Data Structure
 
--List Macro
+-List Macro:
 We constructed a generic linked list structure that can be used for other projects that require linked list data structures. This generic linked list structure contains access to the individual nodes on the list, the head and tail of the list and an iterator that can access the current and previous nodes on the list. 
 
--Job
+-Job:
 The Job structure contains the job process name, the time of arrival to the CPU, the length of time required to be processed by the CPU, and the number of pages required by the job processed which only needs to be known if the virtual memory mode is used.
 
--JobInMemory?
-The JobInMemory structure is used to store the jobs in memory. It keeps track of the number of pages required by each Job process and the location of where the Job process pages are in memory.    
+-JobInMemory:
+The JobInMemory structure is used to store the jobs in the "virtual" memory. It keeps track of the number of pages required by each Job process and the location of where the Job process pages are in memory.    
 
-UnprocessedJob?
+-UnprocessedJob:
+The UnprocessedJob structure contains a pointer to the Job structure which is the Job process, and keeps track of the remaining process time for each Job process, which is important for the round robin algorithm, as the algorithm needs to keep track of how much process time is left for each Job process once its processed the set allocated quanta time. 
 
-ScheduledJob?
+-JobScheduleResult:
+The JobScheduleResult structure keeps track of when a Job process is being run by the CPU. The structure contains the Job process and tracks the start time of when the Job process is being processed by the CPU and how long the CPU has been running the Job process. 
 
 -Page:
 We had made a page structure that contains the pages that the Job process need inorder to be processed. The page structure keeps track of the Job process, the location to where it is stored in memory and the time that it was last accessed at, for the least recently used algorithm.  
