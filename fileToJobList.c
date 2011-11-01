@@ -1,11 +1,8 @@
-// For the sorting algorithm
-//#include <algorithm> 
-
 #define DELIMITER " "
 #define TOKEN_BUFFER_SIZE 10
 #define _GNU_SOURCE
 
-#define DEBUG
+//#define DEBUG
 
 
 #include <stdlib.h>
@@ -14,7 +11,6 @@
 #include <stdio.h>
 
 #include "job.h"
-#include "sort.h"
 #include "debug.h"
 
 #include "fileToJobList.h"

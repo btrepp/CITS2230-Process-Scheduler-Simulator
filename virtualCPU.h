@@ -14,7 +14,6 @@ LIST_PROTOTYPE(UnprocessedJob);
 
 
 typedef struct VirtualCPU{
-        //JobListContainer* unscheduled_jobs;
         list_UnprocessedJob* unscheduled_jobs;
 	list_JobScheduleResult* scheduled;
 	

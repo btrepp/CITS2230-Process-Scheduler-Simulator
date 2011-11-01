@@ -1,8 +1,6 @@
 void runSchedules(JobList* list){
     Job currentelement==list;
-
   //list must be sorted on arrival time
-
     //setupscheduler RR, FCFS etc
     int thisclock=0;
     while((currentelement=currentelement->next!=NULL)){

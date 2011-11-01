@@ -1,18 +1,13 @@
 #pragma once
-
-
-
 #include "job.h"
 #include "page.h"
 
 typedef struct Memory{
 	char* memspace;
 	Page** pages;
-//	FreePageListContainer * freepages;
 	list_Page* freepages;	
 	list_Page* LRU_list;
 	list_JobInMemory* jobs;
-	//JobInMemoryList* jobs;
 	int number_of_pages;
 	int pagesize; 
 } Memory;

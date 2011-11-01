@@ -9,7 +9,7 @@
 #include <string.h>
 #include "htmloutput.h"
 
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 

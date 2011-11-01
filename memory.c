@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 #define PAGELOC(page,list) ((int) ((page)->location_in_memory-list->location_in_memory))
@@ -172,16 +172,6 @@ void freeJob(Memory* mem, Job* job){
 			}		
 
 			list_JobInMemory_remove(it);
-
-			/*if(prev!=NULL)
-				prev->next=jobmem->next;
-			else
-				mem->jobs->head=jobmem->next;	
-
-			if(mem->jobs->head==NULL) mem->jobs->tail=NULL;
-			free(found);
-			free(jobmem);
-*/
 			//Break out of the loop as the job can't be in the list twice
 			break;
 		}

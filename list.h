@@ -1,6 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
-
+// Linked list macro
 #define DEFINE_LIST(type) \
   typedef struct list_node_##type { \
     struct list_node_##type *next; \

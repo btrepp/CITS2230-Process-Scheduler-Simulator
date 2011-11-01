@@ -1,9 +1,8 @@
 #include "virtualCPU.h"
-#include "sort.h"
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 #define PAGES_PHYSICAL 50
@@ -110,8 +109,6 @@ int incrementClock(VirtualCPU* cpu){
 JobScheduleResult* firstComeFirstServe(VirtualCPU* cpu){
     if(cpu->active_job!=NULL)
       return NULL;
-
-    //sort(cpu->unscheduled_jobs->head); // it should be sorted already due to FCFS!.
    
     UnprocessedJob* toSchedule = list_UnprocessedJob_pop(cpu->unscheduled_jobs);
     if(toSchedule==NULL) return NULL;
@@ -120,7 +117,6 @@ JobScheduleResult* firstComeFirstServe(VirtualCPU* cpu){
     scheduledjob->job=toSchedule->job;
     scheduledjob->start_time = cpu->current_clock;
     scheduledjob->running_time = toSchedule->job->length_time;
-    //markJobAsComplete(cpu->active_job->job,true); 
     
     //if we have no jobs to schedule, idle
     //create result
@@ -130,7 +126,6 @@ JobScheduleResult* firstComeFirstServe(VirtualCPU* cpu){
     cpu->active_job = scheduledjob;
     return scheduledjob;
 
-    //insertScheduleElement(cpu->scheduled,scheduledjob);
 }
 
 JobScheduleResult* roundrobin(VirtualCPU* cpu){

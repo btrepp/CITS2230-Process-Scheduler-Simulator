@@ -1,7 +1,6 @@
 #include "jobScheduler.h"
-#include "sort.h"
 
-#define DEBUG
+//#define DEBUG
 #include "debug.h"
 
 #include <stdio.h>
@@ -11,12 +10,4 @@
 
 LIST(JobScheduleResult);
 
-/*
-void insertScheduleElement(JobScheduleContainer* list, JobSchedule* jobsch){
-	if(list->tail==NULL)
- 	       list->head=jobsch;
- 	 else
-        	list->tail->next=jobsch;
-	 list->tail=jobsch;
-}
-*/
+
