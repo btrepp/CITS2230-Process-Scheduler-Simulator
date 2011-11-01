@@ -29,6 +29,12 @@ Jonathan Eng	20263557
 
 	Htmloutputfile :	File that Html memory visualisation prints into
 
+Examples:
+	./scheduler -s FCFS Jobs.txt
+		Runs in scheduler mode using first come first serve algorithm using the jobs from Jobs.txt.
+
+	./scheduler -v RR 2 Jobs.txt 30
+		Runs in virtual memory mode using round robin algorithm with a time quanta of 2, view output of virtual memory at time quanta 30. 
 
 2.	Job input file
 
@@ -36,11 +42,11 @@ Jonathan Eng	20263557
 	
 	Number :	Index number that is assigned to the job
 
-	Arrivaltime :	Time quanta that the job is to arrive into the CPU
+	Arrivaltime :	Time quanta that the job is to arrive into the CPU, a whole number greater than or equal to 0
 
-	Processtime :	Time quanta that the job requires the CPU to process for
+	Processtime :	Time quanta that the job requires the CPU to process for, must be a whole number greater than 0
 
-	Pages :		Number of pages in memory the job requires before it can be processed
+	Pages :		Number of pages in memory the job requires before it can be processed, must be between 1 - 50 
 
 
 ---------------------------------------------------------------------------------------------
@@ -52,28 +58,37 @@ This simulator works by implementing a "virtual" cpu. This cpu can have jobs pas
 next job based on the arguments supplied. 
 
 
-Memory Object:
+-Memory Object:
 
-Adds jobs, scans if already existing, creates if not, LRU if full.
-The memory gets loaded with Jobs from the Jobs text file. Before loading the Jobs into the memory, the memory gets searched first if the pages in the memory exist. If the number of pages already in the memory exists is sufficent for the Job process to be run then the program does not load in new pages but uses the existing pages in there already. If the number of pages is insufficient then load in pages in the memory via LRU until the the number of pages required is sufficient. 
+The memory gets loaded with Jobs from the Jobs text file. Before loading the Jobs into the memory, the memory gets searched first if the pages in the memory exist. If the number of pages already in the memory exists, and is sufficent for the Job process to be run then the program does not load in new pages but uses the existing pages in there already. If the number of pages is insufficient then load the pages in the memory via the LRU function until the the number of pages required is sufficient. 
 
-The LRU is a function to check for the least recently used pages in memory, so that in the event that the memory becomes full with pages from other Jobs the program can start removing pages from memory based on the least recently used algorithm.
+The LRU(Least Recently Used) is a function to check for the least recently used pages in memory, so that in the event that the memory becomes full with pages from other Jobs the program can start removing pages from memory based on the least recently used algorithm.
+
+The "Virtual" memory structure contains the key information needed to store the individual pages required by the job processes as well as keeping track of the least recently used pages, the free pages in memory when processes are completed and no longer needs the memory space, and the list of Jobs that are being sent to the CPU to be processed.
+
+
+
 Data Structure
 
-List Macro
+-List Macro
+We constructed a generic linked list structure that can be used for other projects that require linked list data structures. This generic linked list structure contains access to the individual nodes on the list, the head and tail of the list and an iterator that can access the current and previous nodes on the list. 
 
-Job
+-Job
+The Job structure contains the job process name, the time of arrival to the CPU, the length of time required to be processed by the CPU, and the number of pages required by the job processed which only needs to be known if the virtual memory mode is used.
 
-UnprocessedJob
+-JobInMemory?
+The JobInMemory structure is used to store the jobs in memory. It keeps track of the number of pages required by each Job process and the location of where the Job process pages are in memory.    
 
-ScheduledJob
+UnprocessedJob?
 
-Page
+ScheduledJob?
 
-BONUS HTML VIS
+-Page:
+We had made a page structure that contains the pages that the Job process need inorder to be processed. The page structure keeps track of the Job process, the location to where it is stored in memory and the time that it was last accessed at, for the least recently used algorithm.  
 
-Javascript, to step through memory/clock, colour coded.
+-BONUS HTML VIS:
+As a special bonus, the program is able to run a visual step simulation of the memory as the program is stepping through the memory/clock cycles. The javascript shows the contents of each of the 50 frames in the memory by the Job number and colours the block accordingly to what job pages are allocated in thte memory. 
 
-Debug Files
-
+-Debug Files:
+We added the functionality of having debug statements to print out when we define the debug function in the file that runs the code. This is so that we can control the amount of debug print outs onto the command line to a sustainable and readable manner. 
 
