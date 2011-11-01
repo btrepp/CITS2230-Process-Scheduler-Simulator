@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include "virtualCPU.h"
 
+// Structure for the settings for the operation of the Program
 typedef struct Settings{
 	FILE* jobinput;
 	FILE* memoutput;

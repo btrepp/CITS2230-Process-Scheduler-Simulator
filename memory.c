@@ -116,7 +116,7 @@ JobInMemory* loadJob(Memory* mem, Job* job, int clock){
 				thispage->last_accessed_at != clock) {
 				debug_print("Found page: %d for job %s \n", 
 					PAGELOC(thispage,mem->pages[0]), job->jobname);
-                        	thispage->last_accessed_at = clock;
+                        	thispage->last_accessed_at = clock; // updates the last accessed time
 				pages++;
 
 				list_iterator_Page* it= malloc(sizeof(*it));
@@ -194,8 +194,6 @@ void printPages(Memory* mem, FILE*output){
 
 
 void printMemory(Memory* mem,FILE* output){
-//	printJobsInMemory(mem->jobs);	
-
 	for(int i=0;i<mem->number_of_pages;i++){
 		for(int j=0;j<mem->pagesize;j++){
 			fprintf(output,"%c",mem->memspace[mem->pagesize*i+j]);

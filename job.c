@@ -6,7 +6,7 @@
 
 LIST(Job);
 
-
+// Comparing functions for qsort to use
 int compare_Job_Arrival(const Job** job1, const Job** job2){
 	return ((*job1)->arrival_time)-((*job2)->arrival_time);
 }

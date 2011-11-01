@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <stdbool.h>
-//#include "JobList.c"
 #include "job.h"
 #include "jobScheduler.h"
 #include "virtualCPU.h"
@@ -30,7 +29,7 @@ int main(int argc, char* argv[]) {
 	VirtualCPU cpu0;
 	initCPU(&cpu0);
 
-  
+  	//initialise the program
 	Settings* set = setup(argc,argv);
 	header(set->htmloutput);
 	list_Job* list=FileToJobList(set->jobinput); // list would be sorted on arrival time
@@ -51,7 +50,7 @@ int main(int argc, char* argv[]) {
 	while(current!=NULL){
 		while(current!=NULL && clock==current->arrival_time){
 			if(current->arrival_time < clock){
-				//big problem
+				//Error when process is behind the clock
 				fprintf(stderr,"Process to be scheduled in the past- ERROR\n");
 				exit(EXIT_FAILURE);
 			}
@@ -67,13 +66,10 @@ int main(int argc, char* argv[]) {
 		}
 		clock=incrementClock(&cpu0);
 		dumpMemory(clock,set,&cpu0);
-
-// 		debug_print("%s \n",list->jobname);
-// 		list=list->next;
 		
 	}
 	free(list);
-	while(isCPUIdle(&cpu0)==false /*&& clock<startclocks+2*totalclocks*/){
+	while(isCPUIdle(&cpu0)==false){
 		debug_print("Incrementing clock %d\n",clock);
 		clock=incrementClock(&cpu0);
 		dumpMemory(clock,set,&cpu0);
@@ -81,10 +77,9 @@ int main(int argc, char* argv[]) {
 	debug_print_string("Complete!\n");
 
 	list_JobScheduleResult* results = getResults(&cpu0);
-	//printResults(results);
 	printResultsCompressed(results);
 
 	footer(set->htmloutput);
-	//printf(" [%s] \n", FileToJobList);
+
 	return 0;
 }

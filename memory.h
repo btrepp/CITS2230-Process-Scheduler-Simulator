@@ -2,6 +2,7 @@
 #include "job.h"
 #include "page.h"
 
+// Structure for the virtual memory
 typedef struct Memory{
 	char* memspace;
 	Page** pages;

@@ -7,6 +7,7 @@
 #include "list.h"
 #include <stdlib.h>
 
+// Structure of Job Schedule, for CPU processing of Job
 typedef struct JobScheduleResult{
   Job* job;
   int start_time;

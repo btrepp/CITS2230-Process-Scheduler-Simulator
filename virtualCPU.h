@@ -5,6 +5,7 @@
 #include "jobScheduler.h"
 #include "memory.h"
 
+//Structure for unprocessed job
 typedef struct UnprocessedJob{
 	Job* job;
 	int time_remaining;
@@ -12,7 +13,7 @@ typedef struct UnprocessedJob{
 
 LIST_PROTOTYPE(UnprocessedJob);
 
-
+// structure for the CPU
 typedef struct VirtualCPU{
         list_UnprocessedJob* unscheduled_jobs;
 	list_JobScheduleResult* scheduled;

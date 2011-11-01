@@ -9,7 +9,7 @@
 
 #include "setup.h"
 #include "virtualCPU.h"
-
+// Printout of how to use the program properly
 void printUsage(int argc, char*argv[]){
   printf("usage:\n %s [sv] Scheduler {Quantum} Input File {Memory Quantum} \n"
 	" [-f] memoryoutputfile [-h] htmloutputfile", argv[0]);

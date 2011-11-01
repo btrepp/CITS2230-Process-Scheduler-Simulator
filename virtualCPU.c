@@ -16,6 +16,7 @@ JobScheduleResult* shortprocessnext(VirtualCPU* cpu);
 JobScheduleResult* shortremainingtime(VirtualCPU* cpu);
 
 void initCPU(VirtualCPU* cpu){
+	//initialise the CPU, allocating memory for it
 	memset(cpu,0,sizeof(*cpu));
 	cpu->unscheduled_jobs = malloc(sizeof(*(cpu->unscheduled_jobs)));
 	cpu->scheduled = malloc(sizeof(*(cpu->scheduled)));
@@ -24,13 +25,14 @@ void initCPU(VirtualCPU* cpu){
 }
 
 void unloadProcessor(VirtualCPU* cpu){ 
+	//when an active job is running
    if(cpu->active_job!=NULL)
         debug_print("Clock at:%d, Job  %s Finishes at: %d\n",
 		cpu->current_clock,
 		cpu->active_job->job->jobname,
 		cpu->active_job->start_time+cpu->active_job->running_time);
    else
-        debug_print("Clock at:%d, System Idling\n",cpu->current_clock);
+        debug_print("Clock at:%d, System Idling\n",cpu->current_clock); // when no jobs are being processed
 
    if(cpu->active_job!=NULL && 
 	(cpu->active_job->start_time+cpu->active_job->running_time-1 < cpu->current_clock)){

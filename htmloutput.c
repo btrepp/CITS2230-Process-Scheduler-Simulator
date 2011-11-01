@@ -1,3 +1,4 @@
+// For the visual HTML output 
 #include "htmloutput.h"
 
 void scriptJSHeader(FILE* out);

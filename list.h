@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 // Linked list macro
+// Contains the list, list nodes and iterator
 #define DEFINE_LIST(type) \
   typedef struct list_node_##type { \
     struct list_node_##type *next; \

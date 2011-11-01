@@ -6,7 +6,7 @@
 
 LIST(Page);
 LIST(JobInMemory);
-
+// Functions for printing out the contents
 void printFreePages(list_Page* list, FILE* out){
 	list_node_Page* current = list->head;
 	while(current!=NULL){

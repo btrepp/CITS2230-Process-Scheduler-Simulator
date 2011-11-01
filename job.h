@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include "list.h"
 
+// Structure of Job process
 typedef struct Job{
   char* jobname;
   int arrival_time;

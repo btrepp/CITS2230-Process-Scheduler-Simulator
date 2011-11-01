@@ -55,7 +55,7 @@ list_Job* FileToJobList(FILE* file){
    
       debug_print("Loading Job:%s into container...\n",results[0]);
      
-      //put into container
+      //put into container(ie Job structure)
       Job* newJob = malloc(sizeof(*newJob));
       memset(newJob,0,sizeof(*newJob));
       
@@ -65,6 +65,7 @@ list_Job* FileToJobList(FILE* file){
       newJob->arrival_time= atoi(results[1]);
       newJob->length_time= atoi(results[2]);
 	
+	// check for pages 
        if(i==4)
 		newJob->pages = atoi(results[3]);
        else
