@@ -41,4 +41,39 @@ Jonathan Eng	20263557
 	Processtime :	Time quanta that the job requires the CPU to process for
 
 	Pages :		Number of pages in memory the job requires before it can be processed
-	
+
+
+---------------------------------------------------------------------------------------------
+Structure
+
+-Virtual CPU
+
+This simulator works by implementing a "virtual" cpu. This cpu can have jobs passed onto it, and will schedule the
+next job based on the arguments supplied. 
+
+
+Memory Object:
+
+Adds jobs, scans if already existing, creates if not, LRU if full.
+The memory gets loaded with Jobs from the Jobs text file. Before loading the Jobs into the memory, the memory gets searched first if the pages in the memory exist. If the number of pages already in the memory exists is sufficent for the Job process to be run then the program does not load in new pages but uses the existing pages in there already. If the number of pages is insufficient then load in pages in the memory via LRU until the the number of pages required is sufficient. 
+
+The LRU is a function to check for the least recently used pages in memory, so that in the event that the memory becomes full with pages from other Jobs the program can start removing pages from memory based on the least recently used algorithm.
+Data Structure
+
+List Macro
+
+Job
+
+UnprocessedJob
+
+ScheduledJob
+
+Page
+
+BONUS HTML VIS
+
+Javascript, to step through memory/clock, colour coded.
+
+Debug Files
+
+
